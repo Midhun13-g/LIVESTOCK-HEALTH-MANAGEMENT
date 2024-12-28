@@ -1,6 +1,27 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { Line } from "react-chartjs-2";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+} from "chart.js";
 import "./SettingsPage.css";
+
+// Register Chart.js components
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
 function SettingsPage() {
   const [healthAlerts, setHealthAlerts] = useState(true);
@@ -9,22 +30,16 @@ function SettingsPage() {
   const [trackTemperature, setTrackTemperature] = useState(false);
   const [dataSharing, setDataSharing] = useState(false);
   const [alertFrequency, setAlertFrequency] = useState("daily");
+  const [notification, setNotification] = useState("");
 
   // Load settings from localStorage
   useEffect(() => {
-    const savedHealthAlerts = localStorage.getItem("healthAlerts") === "true";
-    const savedDiseaseOutbreaks = localStorage.getItem("diseaseOutbreaks") === "true";
-    const savedTrackWeight = localStorage.getItem("trackWeight") === "true";
-    const savedTrackTemperature = localStorage.getItem("trackTemperature") === "true";
-    const savedDataSharing = localStorage.getItem("dataSharing") === "true";
-    const savedAlertFrequency = localStorage.getItem("alertFrequency") || "daily";
-
-    setHealthAlerts(savedHealthAlerts);
-    setDiseaseOutbreaks(savedDiseaseOutbreaks);
-    setTrackWeight(savedTrackWeight);
-    setTrackTemperature(savedTrackTemperature);
-    setDataSharing(savedDataSharing);
-    setAlertFrequency(savedAlertFrequency);
+    setHealthAlerts(localStorage.getItem("healthAlerts") === "true" || true);
+    setDiseaseOutbreaks(localStorage.getItem("diseaseOutbreaks") === "true" || true);
+    setTrackWeight(localStorage.getItem("trackWeight") === "true" || true);
+    setTrackTemperature(localStorage.getItem("trackTemperature") === "true" || false);
+    setDataSharing(localStorage.getItem("dataSharing") === "true" || false);
+    setAlertFrequency(localStorage.getItem("alertFrequency") || "daily");
   }, []);
 
   // Save settings to localStorage
@@ -37,8 +52,22 @@ function SettingsPage() {
     localStorage.setItem("alertFrequency", alertFrequency);
   }, [healthAlerts, diseaseOutbreaks, trackWeight, trackTemperature, dataSharing, alertFrequency]);
 
-  // Data visualization (example for weight tracking)
-  const chartData = {
+  // Display notifications
+  useEffect(() => {
+    if (notification) {
+      const timer = setTimeout(() => setNotification(""), 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [notification]);
+
+  // Handle setting change with feedback
+  const handleSettingChange = (setter, value, message) => {
+    setter(value);
+    setNotification(message);
+  };
+
+  // Memoized data visualization for weight tracking
+  const chartData = useMemo(() => ({
     labels: ["Week 1", "Week 2", "Week 3", "Week 4"],
     datasets: [
       {
@@ -49,20 +78,23 @@ function SettingsPage() {
         tension: 0.1,
       },
     ],
-  };
+  }), []);
 
-  const chartOptions = {
+  const chartOptions = useMemo(() => ({
     responsive: true,
     plugins: {
       legend: {
         position: "top",
       },
     },
-  };
+  }), []);
 
   return (
     <div className="settings">
       <h2 className="settings-title">Livestock Health Management Settings</h2>
+
+      {/* Notifications */}
+      {notification && <div className="notification">{notification}</div>}
 
       {/* Health Alerts */}
       <div className="setting-option">
@@ -72,7 +104,7 @@ function SettingsPage() {
             type="checkbox"
             id="healthAlerts"
             checked={healthAlerts}
-            onChange={() => setHealthAlerts(!healthAlerts)}
+            onChange={() => handleSettingChange(setHealthAlerts, !healthAlerts, "Health Alerts updated")}
           />
           <span className="slider"></span>
         </div>
@@ -86,7 +118,7 @@ function SettingsPage() {
             type="checkbox"
             id="diseaseOutbreaks"
             checked={diseaseOutbreaks}
-            onChange={() => setDiseaseOutbreaks(!diseaseOutbreaks)}
+            onChange={() => handleSettingChange(setDiseaseOutbreaks, !diseaseOutbreaks, "Disease Outbreaks Notifications updated")}
           />
           <span className="slider"></span>
         </div>
@@ -100,7 +132,7 @@ function SettingsPage() {
             type="checkbox"
             id="trackWeight"
             checked={trackWeight}
-            onChange={() => setTrackWeight(!trackWeight)}
+            onChange={() => handleSettingChange(setTrackWeight, !trackWeight, "Weight Tracking updated")}
           />
           <span className="slider"></span>
         </div>
@@ -114,7 +146,7 @@ function SettingsPage() {
             type="checkbox"
             id="trackTemperature"
             checked={trackTemperature}
-            onChange={() => setTrackTemperature(!trackTemperature)}
+            onChange={() => handleSettingChange(setTrackTemperature, !trackTemperature, "Temperature Tracking updated")}
           />
           <span className="slider"></span>
         </div>
@@ -128,7 +160,7 @@ function SettingsPage() {
             type="checkbox"
             id="dataSharing"
             checked={dataSharing}
-            onChange={() => setDataSharing(!dataSharing)}
+            onChange={() => handleSettingChange(setDataSharing, !dataSharing, "Data Sharing updated")}
           />
           <span className="slider"></span>
         </div>
@@ -140,7 +172,7 @@ function SettingsPage() {
         <select
           id="alertFrequency"
           value={alertFrequency}
-          onChange={(e) => setAlertFrequency(e.target.value)}
+          onChange={(e) => handleSettingChange(setAlertFrequency, e.target.value, "Alert Frequency updated")}
           className="select"
         >
           <option value="daily">Daily</option>
