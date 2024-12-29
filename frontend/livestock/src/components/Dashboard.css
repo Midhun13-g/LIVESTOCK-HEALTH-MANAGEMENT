@@ -76,7 +76,7 @@
 /* Add Animal Form Container (modal-like appearance) */
 .add-animal-form-container {
   position: fixed;
-  top: 0;
+  top: 30px;
   left: 0;
   width: 100%;
   height: 100%;
@@ -91,7 +91,7 @@
   background-color: white;
   padding: 20px;
   border-radius: 8px;
-  width: 400px;
+  width: 450px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 

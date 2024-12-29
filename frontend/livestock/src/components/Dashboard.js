@@ -22,6 +22,7 @@ function Dashboard() {
 
   const [isFormVisible, setIsFormVisible] = useState(false);
   const [filterStatus, setFilterStatus] = useState('');
+  const [editingAnimal, setEditingAnimal] = useState(null); // Track the animal being edited
 
   // Handle input change for new animal form
   const handleInputChange = (e) => {
@@ -41,6 +42,17 @@ function Dashboard() {
     setIsFormVisible(false);
   };
 
+  // Handle saving an edited animal
+  const handleSave = (updatedAnimal) => {
+    // Update the animal data in the state
+    setAnimals(animals.map(animal => 
+      animal.id === updatedAnimal.id ? updatedAnimal : animal
+    ));
+    setEditingAnimal(null); // Close the edit form after saving
+    setFormData({ name: '', type: '', status: 'healthy', born: '', nextCheckup: '', insemination: '' }); // Reset form data
+    setIsFormVisible(false); // Close the form
+  };
+
   // Handle filter status change
   const handleFilterChange = (e) => {
     setFilterStatus(e.target.value);
@@ -55,6 +67,13 @@ function Dashboard() {
   const filteredAnimals = animals.filter((animal) =>
     filterStatus ? animal.status === filterStatus : true
   );
+
+  // Start editing an animal's information
+  const handleEdit = (animal) => {
+    setFormData(animal); // Populate the form with the animal's current data
+    setEditingAnimal(animal); // Set the animal being edited
+    setIsFormVisible(true); // Show the form
+  };
 
   return (
     <div className="dashboard-container">
@@ -82,17 +101,17 @@ function Dashboard() {
             key={animal.id}
             {...animal}
             onRemove={handleRemove}
-            // Other necessary props like onSave or onScheduleCheckup can be passed here
+            onEdit={handleEdit}  // Pass the edit function to AnimalCard
+            onSave={handleSave}  // Pass the save function to AnimalCard
           />
         ))}
       </div>
 
-      {/* Add New Animal Form */}
+      {/* Add/Edit Animal Form */}
       {isFormVisible && (
         <div className="add-animal-form-container">
           <div className="add-animal-form">
-            <h3>Add New Animal</h3>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={(e) => { e.preventDefault(); editingAnimal ? handleSave(formData) : handleSubmit(e); }}>
               <div className="form-field">
                 <label>Name</label>
                 <input
@@ -155,7 +174,7 @@ function Dashboard() {
                 />
               </div>
               <div className="form-actions">
-                <button type="submit">Add Animal</button>
+                <button type="submit">{editingAnimal ? "Save Changes" : "Add Animal"}</button>
                 <button type="button" onClick={() => setIsFormVisible(false)}>
                   Cancel
                 </button>

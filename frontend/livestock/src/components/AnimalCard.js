@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import AnimalDetails from "./animals/details/AnimalDetails"; // Import AnimalDetails for detailed info
 import "./AnimalCard.css";
 
 function AnimalCard({
@@ -10,10 +11,11 @@ function AnimalCard({
   nextCheckup,
   insemination,
   onRemove,
-  onSave,
+  onSave, // Function to save edited animal details
   onScheduleCheckup,  // Function to schedule checkup
 }) {
   const [isEditing, setIsEditing] = useState(false);
+  const [isViewingDetails, setIsViewingDetails] = useState(false); // State to toggle details view
   const [editedAnimal, setEditedAnimal] = useState({
     name,
     type,
@@ -22,6 +24,14 @@ function AnimalCard({
     nextCheckup,
     insemination,
   });
+
+  const calculateAge = (birthDate) => {
+    const birth = new Date(birthDate);
+    const today = new Date();
+    const years = today.getFullYear() - birth.getFullYear();
+    const months = today.getMonth() - birth.getMonth();
+    return months < 0 ? `${years - 1} years ${12 + months} months` : `${years} years ${months} months`;
+  };
 
   // Handle input field changes
   const handleChange = (e) => {
@@ -34,8 +44,12 @@ function AnimalCard({
 
   // Save the edited animal details
   const handleSave = () => {
-    onSave(editedAnimal);  // Save the changes
-    setIsEditing(false);    // Close the modal
+    if (typeof onSave === "function") {
+      onSave(editedAnimal);  // Save the changes
+      setIsEditing(false);    // Close the modal
+    } else {
+      console.error("onSave is not a function");
+    }
   };
 
   // Toggle the editing mode
@@ -49,13 +63,14 @@ function AnimalCard({
     onRemove(id);  // Call onRemove function with the 'id' to remove the specific card
   };
 
-  // Handle Schedule Checkup
-  const handleScheduleCheckup = () => {
-    if (onScheduleCheckup) {
-      onScheduleCheckup(id);  // Call onScheduleCheckup with the 'id'
-    } else {
-      alert("No scheduling function provided.");
-    }
+  // Handle View Details button
+  const handleViewDetails = () => {
+    setIsViewingDetails(true); // Set the state to view the details
+  };
+
+  // Handle Hide Details button (Close Modal)
+  const handleHideDetails = () => {
+    setIsViewingDetails(false); // Hide the details
   };
 
   return (
@@ -148,8 +163,8 @@ function AnimalCard({
             </div>
           </div>
         ) : (
-          // Display animal details if not editing
           <>
+            {/* Display animal details if not editing */}
             <div className="info-row">
               <p className="info-label">Status:</p>
               <p className={`status-${status} info-value`}>{status}</p>
@@ -169,10 +184,17 @@ function AnimalCard({
               </p>
             </div>
 
-            {/* Buttons for editing, removing, or scheduling checkup */}
+            {/* Buttons for editing, removing, or viewing details */}
             <div className="animal-card-buttons">
               <button className="btn btn-primary" onClick={handleEdit}>
                 Edit
+              </button>
+              
+              <button
+                className="btn btn-info"
+                onClick={handleViewDetails}  // Show the View Details Modal
+              >
+                View Details
               </button>
               <button
                 className="btn btn-danger"
@@ -180,14 +202,24 @@ function AnimalCard({
               >
                 Remove
               </button>
-              <button
-                className="btn btn-info"
-                onClick={handleScheduleCheckup}  // Passing 'id' for scheduling checkup
-              >
-                Schedule Checkup
-              </button>
             </div>
           </>
+        )}
+
+        {/* Conditionally render the AnimalDetails component in a modal */}
+        {isViewingDetails && (
+          <div className="animal-details-modal">
+            <div className="modal-content">
+              {/* Header for the modal */}
+              <div className="modal-header">
+                <button className="back-button" onClick={handleHideDetails}>&lt; Back</button>
+                <h3>{editedAnimal.name} - {calculateAge(editedAnimal.born)}</h3>
+              </div>
+              
+              {/* Animal Details */}
+              <AnimalDetails animal={{ id, ...editedAnimal }} /> {/* Pass full animal object */}
+            </div>
+          </div>
         )}
       </div>
     </div>

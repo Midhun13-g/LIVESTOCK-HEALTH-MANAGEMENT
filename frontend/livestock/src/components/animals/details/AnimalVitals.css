@@ -1,0 +1,66 @@
+/* Container for all the vital stats */
+.animal-vitals-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin-top: 20px;
+  }
+  
+  @media (min-width: 768px) {
+    .animal-vitals-container {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+  
+  /* Styling for each vital card */
+  .vital-card {
+    background-color: white;
+    padding: 16px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .vital-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+  
+  .icon {
+    width: 20px;
+    height: 20px;
+    margin-right: 8px;
+  }
+  
+  .vital-name {
+    font-size: 14px;
+    font-weight: 500;
+  }
+  
+  .vital-value {
+    font-size: 24px;
+    font-weight: bold;
+  }
+  
+  .last-updated {
+    font-size: 12px;
+    color: gray;
+  }
+  
+  /* Specific styling for different vitals */
+  .heart-rate {
+    border-left: 4px solid #e53e3e;
+  }
+  
+  .temperature {
+    border-left: 4px solid #dd6b20;
+  }
+  
+  .weight {
+    border-left: 4px solid #3182ce;
+  }
+  
+  .status {
+    border-left: 4px solid #48bb78;
+  }
+  
