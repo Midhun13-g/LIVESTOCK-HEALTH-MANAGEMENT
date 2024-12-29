@@ -1,66 +1,99 @@
-/* Container for all the vital stats */
-.animal-vitals-container {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 16px;
-    margin-top: 20px;
+/* Container for the grid layout */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* 2 columns by default */
+  gap: 1rem;
+}
+
+/* Media query for larger screens */
+@media (min-width: 768px) {
+  .md\:grid-cols-4 {
+    grid-template-columns: repeat(4, 1fr); /* 4 columns on larger screens */
   }
-  
-  @media (min-width: 768px) {
-    .animal-vitals-container {
-      grid-template-columns: repeat(4, 1fr);
-    }
+}
+
+/* Card styling for each vital stat */
+.bg-white {
+  background-color: white;
+}
+
+.p-4 {
+  padding: 1rem;
+}
+
+.rounded-lg {
+  border-radius: 0.75rem; /* Rounded corners for the card */
+}
+
+.shadow-sm {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Light shadow */
+}
+
+/* Flex styling for icons and text */
+.flex {
+  display: flex;
+  align-items: center;
+}
+
+.items-center {
+  align-items: center;
+}
+
+.space-x-2 {
+  margin-right: 0.5rem; /* Space between icon and text */
+}
+
+.text-red-500 {
+  color: #f87171; /* Red color for heart rate */
+}
+
+.text-orange-500 {
+  color: #fb923c; /* Orange color for temperature */
+}
+
+.text-blue-500 {
+  color: #3b82f6; /* Blue color for weight */
+}
+
+.text-green-500 {
+  color: #10b981; /* Green color for status */
+}
+
+/* Styling for the labels */
+.font-medium {
+  font-weight: 500;
+}
+
+/* Styling for the values (numbers) */
+.text-2xl {
+  font-size: 1.5rem; /* Larger font size for the values */
+}
+
+.font-bold {
+  font-weight: 700; /* Bold font for the values */
+}
+
+.text-sm {
+  font-size: 0.875rem; /* Smaller font size for the status text */
+}
+
+/* Styling for the "Updated" text */
+.text-gray-500 {
+  color: #6b7280; /* Gray color for the updated time */
+}
+
+/* Icon size */
+.w-5 {
+  width: 1.25rem;
+}
+
+.h-5 {
+  height: 1.25rem;
+}
+
+/* Adjustments for mobile responsiveness */
+@media (max-width: 767px) {
+  .grid {
+    grid-template-columns: 1fr; /* Single column on smaller screens */
   }
-  
-  /* Styling for each vital card */
-  .vital-card {
-    background-color: white;
-    padding: 16px;
-    border-radius: 8px;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-  }
-  
-  .vital-header {
-    display: flex;
-    align-items: center;
-    margin-bottom: 8px;
-  }
-  
-  .icon {
-    width: 20px;
-    height: 20px;
-    margin-right: 8px;
-  }
-  
-  .vital-name {
-    font-size: 14px;
-    font-weight: 500;
-  }
-  
-  .vital-value {
-    font-size: 24px;
-    font-weight: bold;
-  }
-  
-  .last-updated {
-    font-size: 12px;
-    color: gray;
-  }
-  
-  /* Specific styling for different vitals */
-  .heart-rate {
-    border-left: 4px solid #e53e3e;
-  }
-  
-  .temperature {
-    border-left: 4px solid #dd6b20;
-  }
-  
-  .weight {
-    border-left: 4px solid #3182ce;
-  }
-  
-  .status {
-    border-left: 4px solid #48bb78;
-  }
-  
+}

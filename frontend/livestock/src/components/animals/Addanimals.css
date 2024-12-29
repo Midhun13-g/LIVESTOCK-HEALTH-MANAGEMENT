@@ -5,7 +5,7 @@
     left: 0;
     width: 100vw;
     height: 100vh;
-    background-color: rgba(255, 0, 0, 0.5); /* Semi-transparent dark background */
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent dark background */
     display: flex;
     align-items: center;
     justify-content: center;

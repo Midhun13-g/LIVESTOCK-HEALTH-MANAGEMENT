@@ -1,63 +1,85 @@
-/* Container for the whole timeline */
+/* Container for the timeline */
 .timeline-container {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    padding: 16px;
-    background-color: #f9fafb;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem;
+}
+
+/* Individual event container */
+.timeline-event {
+  display: flex;
+  align-items: start;
+  gap: 1rem;
+  padding: 1rem;
+  border: 1px solid #e5e7eb; /* Light gray border */
+  border-radius: 0.75rem; /* Rounded corners */
+  background-color: #ffffff; /* White background */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Light shadow */
+}
+
+/* Icon wrapper that styles the circular icons */
+.icon-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.5rem;
+  border-radius: 50%;
+  width: 2.5rem;
+  height: 2.5rem;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1); /* Light shadow around the icon */
+}
+
+/* Styling for completed events */
+.completed {
+  background-color: #d1fae5; /* Light green background */
+  color: #10b981; /* Green icon color */
+}
+
+/* Styling for scheduled events */
+.scheduled {
+  background-color: #bfdbfe; /* Light blue background */
+  color: #3b82f6; /* Blue icon color */
+}
+
+/* Event details container */
+.event-details {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+/* Styling for event description text */
+.event-description {
+  font-weight: 500;
+  font-size: 1rem;
+  color: #333333; /* Dark gray for description */
+  margin-bottom: 0.25rem;
+}
+
+/* Styling for event date text */
+.event-date {
+  font-size: 0.875rem; /* Smaller font for date */
+  color: #6b7280; /* Gray color */
+}
+
+/* Icon size */
+.w-5 {
+  width: 1.25rem;
+}
+
+.h-5 {
+  height: 1.25rem;
+}
+
+/* Responsive grid layout for larger screens */
+@media (min-width: 768px) {
+  .timeline-container {
+    padding: 2rem; /* Larger padding on bigger screens */
   }
-  
-  /* Each event block */
+
   .timeline-event {
-    display: flex;
-    align-items: flex-start;
-    gap: 16px;
-    padding: 12px;
-    border-radius: 8px;
-    background-color: white;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 1.5rem; /* Larger padding for events */
   }
-  
-  /* Icon styling for each event */
-  .event-icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    font-size: 20px;
-  }
-  
-  /* Different color schemes for event status */
-  .event-icon.completed {
-    background-color: #d1fad1; /* Light green */
-    color: #38a169; /* Dark green */
-  }
-  
-  .event-icon.scheduled {
-    background-color: #c3d9f3; /* Light blue */
-    color: #3182ce; /* Blue */
-  }
-  
-  /* Event details section */
-  .event-details {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
-  
-  /* Event description style */
-  .event-description {
-    font-weight: 500;
-    font-size: 14px;
-    color: #333;
-    margin-bottom: 4px;
-  }
-  
-  /* Event date style */
-  .event-date {
-    font-size: 12px;
-    color: #6b7280; /* Gray color */
-  }
-  
+}

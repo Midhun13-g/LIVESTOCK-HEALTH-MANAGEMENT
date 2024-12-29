@@ -1,26 +1,43 @@
+// AnimalVitals.js
 import React from 'react';
-import PropTypes from 'prop-types';
-import './AnimalVitals.css';
+import { Heart, Thermometer, Activity, Scale } from 'lucide-react';
 
 const AnimalVitals = ({ heartRate, temperature, weight, lastUpdated }) => {
   return (
-    <div className="animal-vitals">
-      <h3>Vitals</h3>
-      <ul>
-        <li>Heart Rate: {heartRate} bpm</li>
-        <li>Temperature: {temperature} °C</li>
-        <li>Weight: {weight} kg</li>
-        <li>Last Updated: {lastUpdated}</li>
-      </ul>
+    <div className="vitals-grid">
+      <div className="vital-item vital-heart">
+        <div className="vital-header">
+          <Heart className="vital-icon" />
+          <span>Heart Rate</span>
+        </div>
+        <p className="vital-value">{heartRate} BPM</p>
+      </div>
+
+      <div className="vital-item vital-temperature">
+        <div className="vital-header">
+          <Thermometer className="vital-icon" />
+          <span>Temperature</span>
+        </div>
+        <p className="vital-value">{temperature}°C</p>
+      </div>
+
+      <div className="vital-item vital-weight">
+        <div className="vital-header">
+          <Scale className="vital-icon" />
+          <span>Weight</span>
+        </div>
+        <p className="vital-value">{weight} kg</p>
+      </div>
+
+      <div className="vital-item vital-status">
+        <div className="vital-header">
+          <Activity className="vital-icon" />
+          <span>Status</span>
+        </div>
+        <p className="vital-updated">Updated {lastUpdated}</p>
+      </div>
     </div>
   );
-};
-
-AnimalVitals.propTypes = {
-  heartRate: PropTypes.number.isRequired,
-  temperature: PropTypes.number.isRequired,
-  weight: PropTypes.number.isRequired,
-  lastUpdated: PropTypes.string.isRequired,
 };
 
 export default AnimalVitals;

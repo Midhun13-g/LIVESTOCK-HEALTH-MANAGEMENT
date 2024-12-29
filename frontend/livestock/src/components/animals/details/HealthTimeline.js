@@ -1,16 +1,15 @@
 import React from 'react';
-import './HealthTimeline.css';
 import { Calendar, Stethoscope, Syringe } from 'lucide-react';
 
 const HealthTimeline = ({ events }) => {
   const getIcon = (type) => {
     switch (type) {
       case 'checkup':
-        return <Stethoscope className="icon" />;
+        return <Stethoscope className="w-5 h-5" />;
       case 'vaccination':
-        return <Syringe className="icon" />;
+        return <Syringe className="w-5 h-5" />;
       case 'treatment':
-        return <Calendar className="icon" />;
+        return <Calendar className="w-5 h-5" />;
       default:
         return null;
     }
@@ -20,7 +19,7 @@ const HealthTimeline = ({ events }) => {
     <div className="timeline-container">
       {events.map((event) => (
         <div key={event.id} className="timeline-event">
-          <div className={`event-icon ${event.status === 'completed' ? 'completed' : 'scheduled'}`}>
+          <div className={`icon-wrapper ${event.status === 'completed' ? 'completed' : 'scheduled'}`}>
             {getIcon(event.type)}
           </div>
           <div className="event-details">
