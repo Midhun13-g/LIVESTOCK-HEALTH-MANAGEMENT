@@ -25,14 +25,6 @@ function AnimalCard({
     insemination,
   });
 
-  const calculateAge = (birthDate) => {
-    const birth = new Date(birthDate);
-    const today = new Date();
-    const years = today.getFullYear() - birth.getFullYear();
-    const months = today.getMonth() - birth.getMonth();
-    return months < 0 ? `${years - 1} years ${12 + months} months` : `${years} years ${months} months`;
-  };
-
   // Handle input field changes
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -212,9 +204,12 @@ function AnimalCard({
             <div className="modal-content">
               {/* Header for the modal */}
               <div className="modal-header">
-                <button className="back-button" onClick={handleHideDetails}>&lt; Back</button>
-                <h3>{editedAnimal.name} - {calculateAge(editedAnimal.born)}</h3>
-              </div>
+                <span className="back-text" onClick={handleHideDetails}>
+            &#8592; Back to Animals
+                </span>
+</div>
+
+
               
               {/* Animal Details */}
               <AnimalDetails animal={{ id, ...editedAnimal }} /> {/* Pass full animal object */}

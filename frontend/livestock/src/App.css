@@ -32,7 +32,7 @@
 
 .main-content {
   margin-left: 250px; /* Matches sidebar width */
-  margin-top: 2rem; /* Matches header height */
+  margin-top: 3rem; /* Matches header height */
   padding: 1rem;
   flex: 1;
   overflow-y: auto; /* Allows scrolling for the main content */

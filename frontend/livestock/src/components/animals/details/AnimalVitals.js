@@ -1,6 +1,7 @@
 // AnimalVitals.js
 import React from 'react';
 import { Heart, Thermometer, Activity, Scale } from 'lucide-react';
+import './AnimalVitals.css';
 
 const AnimalVitals = ({ heartRate, temperature, weight, lastUpdated }) => {
   return (

@@ -3,9 +3,9 @@
 .animal-details {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 1.0rem;
   background-color: #f9f9f9;
-  padding: 1.5rem;
+  padding:1.0rem;
   border-radius: 0.5rem;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
@@ -15,7 +15,7 @@
   justify-content: space-between;
   align-items: flex-start;
   background-color: #ffffff;
-  padding: 1.5rem;
+  padding: 1rem;
   border-radius: 0.5rem;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
@@ -27,7 +27,7 @@
 }
 
 .animal-name {
-  font-size: 1.5rem;
+  font-size: 1.50rem;
   font-weight: bold;
   color: #333333;
 }
@@ -40,6 +40,7 @@
 
 .meta-item {
   display: flex;
+  margin-right: 200px;
   align-items: center;
   gap: 0.5rem;
 }

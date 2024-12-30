@@ -1,99 +1,58 @@
-/* Container for the grid layout */
-.grid {
+.vitals-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr); /* 2 columns by default */
-  gap: 1rem;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+  margin: 1rem 0;
 }
 
-/* Media query for larger screens */
-@media (min-width: 768px) {
-  .md\:grid-cols-4 {
-    grid-template-columns: repeat(4, 1fr); /* 4 columns on larger screens */
-  }
+.vital-item {
+  padding: 2rem;
+  border: 0.1px solid #ffffff;
+  border-radius: 0.5rem;
+  background-color: #fff;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* Card styling for each vital stat */
-.bg-white {
-  background-color: white;
-}
-
-.p-4 {
-  padding: 1rem;
-}
-
-.rounded-lg {
-  border-radius: 0.75rem; /* Rounded corners for the card */
-}
-
-.shadow-sm {
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Light shadow */
-}
-
-/* Flex styling for icons and text */
-.flex {
+.vital-header {
   display: flex;
   align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  font-weight: 700;
+  color: #444;
 }
 
-.items-center {
-  align-items: center;
+.vital-icon {
+  width: 24px;
+  height: 24px;
+  color: #007bff;
 }
 
-.space-x-2 {
-  margin-right: 0.5rem; /* Space between icon and text */
+.vital-value {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #333;
 }
 
-.text-red-500 {
-  color: #f87171; /* Red color for heart rate */
+.vital-updated {
+  font-size: 0.9rem;
+  color: #6c757d;
 }
 
-.text-orange-500 {
-  color: #fb923c; /* Orange color for temperature */
+.vital-heart .vital-icon {
+  color: #e63946;
 }
 
-.text-blue-500 {
-  color: #3b82f6; /* Blue color for weight */
+.vital-temperature .vital-icon {
+  color: #ff8c00;
 }
 
-.text-green-500 {
-  color: #10b981; /* Green color for status */
+.vital-weight .vital-icon {
+  color: #1e90ff;
 }
 
-/* Styling for the labels */
-.font-medium {
-  font-weight: 500;
-}
-
-/* Styling for the values (numbers) */
-.text-2xl {
-  font-size: 1.5rem; /* Larger font size for the values */
-}
-
-.font-bold {
-  font-weight: 700; /* Bold font for the values */
-}
-
-.text-sm {
-  font-size: 0.875rem; /* Smaller font size for the status text */
-}
-
-/* Styling for the "Updated" text */
-.text-gray-500 {
-  color: #6b7280; /* Gray color for the updated time */
-}
-
-/* Icon size */
-.w-5 {
-  width: 1.25rem;
-}
-
-.h-5 {
-  height: 1.25rem;
-}
-
-/* Adjustments for mobile responsiveness */
-@media (max-width: 767px) {
-  .grid {
-    grid-template-columns: 1fr; /* Single column on smaller screens */
-  }
+.vital-status .vital-icon {
+  color: #28a745;
 }

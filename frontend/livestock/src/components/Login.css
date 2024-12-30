@@ -3,6 +3,7 @@
   margin: 0;
   padding: 0;
   font-family: 'Arial', sans-serif;
+  margin:0px;
   /* background-color: #cfdfe1; */
 }
 
@@ -10,6 +11,7 @@ body, html {
   height: 100%;
   width: 100%;
   background-color: #f8f8f8;
+  margin-top: -15px;
 }
 
 /* Full Screen Login Container */
@@ -21,7 +23,7 @@ body, html {
   width: 80%;    /* Full viewport width */
   /* background: linear-gradient(135deg, #6c7b8b, #2a2a72); */
   padding: 0;
-  margin: 0;
+  margin: -20px;
 }
 
 /* Left Side (Form) */
@@ -33,7 +35,7 @@ body, html {
   background-color: #fff;
   text-align: center;
   position: relative;
-  margin-left: 0px;
+  margin-left:0px;
 }
 
 .login-left h1 {

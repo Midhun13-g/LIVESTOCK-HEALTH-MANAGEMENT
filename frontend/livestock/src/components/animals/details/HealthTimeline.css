@@ -10,7 +10,7 @@
 .timeline-event {
   display: flex;
   align-items: start;
-  gap: 1rem;
+  gap: 1.5rem;
   padding: 1rem;
   border: 1px solid #e5e7eb; /* Light gray border */
   border-radius: 0.75rem; /* Rounded corners */
@@ -38,7 +38,7 @@
 
 /* Styling for scheduled events */
 .scheduled {
-  background-color: #bfdbfe; /* Light blue background */
+  background-color: #bfdbfe; 
   color: #3b82f6; /* Blue icon color */
 }
 
@@ -76,10 +76,10 @@
 /* Responsive grid layout for larger screens */
 @media (min-width: 768px) {
   .timeline-container {
-    padding: 2rem; /* Larger padding on bigger screens */
+    padding: 0.5rem; /* Larger padding on bigger screens */
   }
 
   .timeline-event {
-    padding: 1.5rem; /* Larger padding for events */
+    padding: 0.8rem; /* Larger padding for events */
   }
 }

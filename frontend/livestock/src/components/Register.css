@@ -3,6 +3,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  
 }
 
 body {
@@ -17,6 +18,7 @@ body {
   display: flex;
   height: 95vh;
   padding-right: 200px;
+  margin:-15px;
 }
 
 /* Left Section (Image) */
@@ -35,7 +37,7 @@ body {
 
 /* Right Section (Form) */
 .register-right {
-  width: 118%;
+  width: 116.5%;
   background-color: #ffffff;
   display: flex;
   flex-direction: column;

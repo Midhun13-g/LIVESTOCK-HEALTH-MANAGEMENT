@@ -1,6 +1,6 @@
 import React from 'react';
 import { Calendar, Stethoscope, Syringe } from 'lucide-react';
-
+import './HealthTimeline.css';
 const HealthTimeline = ({ events }) => {
   const getIcon = (type) => {
     switch (type) {
