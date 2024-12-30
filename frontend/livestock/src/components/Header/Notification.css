@@ -1,33 +1,46 @@
-/* notification.css */
-.notification {
-    position: relative;
-    display: inline-block;
+.notification-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.notification-item {
+  background-color: #4facfe;
+  color: #fff;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  animation: fadeIn 0.3s ease;
+  position: relative;
+}
+
+.dismiss-btn {
+  background: #ff4d4d;
+  color: #fff;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  position: absolute;
+  top: 5px;
+  right: 5px;
+}
+
+.dismiss-btn:hover {
+  background: #d33;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
   }
-  
-  .notification-link {
-    display: flex;
-    align-items: center;
-    color: #4a4a4a;
-    text-decoration: none;
+  to {
+    opacity: 1;
+    transform: translateX(0);
   }
-  
-  .icon {
-    width: 24px;
-    height: 24px;
-  }
-  
-  .notification-count {
-    position: absolute;
-    top: -5px;
-    right: -5px;
-    background-color: #f00;
-    color: #fff;
-    font-size: 12px;
-    font-weight: bold;
-    width: 16px;
-    height: 16px;
-    border-radius: 50%;
-    text-align: center;
-    line-height: 16px;
-  }
-  
+}

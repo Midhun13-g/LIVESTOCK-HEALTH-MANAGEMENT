@@ -49,7 +49,7 @@ const ReportsPage = () => {
           `Report: ${report.name}\nDate: ${report.date}\nType: ${report.type}\nStatus: ${report.status}`,
         ],
         { type: 'application/pdf' }
-      );
+      )
       const link = document.createElement('a');
       link.href = URL.createObjectURL(blob);
       link.download = `${name}.pdf`;
