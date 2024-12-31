@@ -10,19 +10,34 @@ const Login = ({ onLogin }) => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    const email = e.target.email.value;
+    const username = e.target.username.value;
     const password = e.target.password.value;
 
     try {
-      const response = await axios.post("http://127.0.0.1:8000/login", { email, password });
+      // Prepare form data for the request
+      const formData = new URLSearchParams();
+      formData.append("username", username);
+      formData.append("password", password);
+
+      // Send POST request to login
+      const response = await axios.post("http://127.0.0.1:8000/token", formData, {
+        headers: { "Content-Type": "application/x-www-form-urlencoded" }
+      });
+
       console.log(response.data);
+
+      // Store the access token in localStorage (if needed)
+      localStorage.setItem('token', response.data.access_token);
+
+      // Show success message and redirect
       alert("Login successful!");
       onLogin();
       navigate("/dashboard");
     } catch (error) {
+      // Handle errors based on the response status
       if (error.response) {
         if (error.response.status === 422) {
-          setError("Invalid email format. Please check your email address.");
+          setError("Invalid username or password. Please check your details.");
         } else if (error.response.status === 404) {
           setError("User not found. Please register first.");
         } else if (error.response.status === 401) {
@@ -44,13 +59,13 @@ const Login = ({ onLogin }) => {
         <form className="login-form" onSubmit={handleLogin}>
           <div className="form-group">
             <div className="text">
-              Email
+              Username
             </div>
             <input
-              type="email"
+              type="text"
               className="form-control"
-              placeholder="Enter your email"
-              name="email"
+              placeholder="Enter your username"
+              name="username"
               required
             />
           </div>

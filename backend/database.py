@@ -1,12 +1,7 @@
-import motor.motor_asyncio
+from pymongo import MongoClient
 
-try:
-    client = motor.motor_asyncio.AsyncIOMotorClient('mongodb://localhost:27017')
-    db = client.Livestock
-    collection = db.UsersCollections
-    collection = db.Animals
-except ConnectionError:
-    print("Could not connect to MongoDB.")
-    raise
-
-print("Connecting to MongoDB")
+MONGO_URI = "mongodb://localhost:27017"  # Replace with your MongoDB connection string
+client = MongoClient(MONGO_URI)
+db = client["Livestock"]
+users_collection = db["users"]
+animals_collection = db["animals"] 

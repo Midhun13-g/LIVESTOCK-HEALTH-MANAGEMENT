@@ -1,17 +1,48 @@
-import uuid
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel
+from datetime import date,datetime
 from typing import Optional
+# Models
+class Token(BaseModel):
+    access_token: str
+    token_type: str
+
+
+class TokenData(BaseModel):
+    username: str | None = None
+
 
 class User(BaseModel):
-    email: EmailStr
-    password: str
+    username: str
+    email: str | None = None
+    # disabled: bool | None = None
+
+
+class UserInDB(User):
+    hashed_password: str
+
 
 class Animal(BaseModel):
-    animal_id: str = uuid.uuid4().hex  # UUID for the animal
-    user_id: str  # User ID to link the animal to the user
-    breed: Optional[str]  # Optional breed field
-    age: Optional[int]    # Optional age field
-    gender: Optional[str] # Optional gender field
+    name: str
+    species: str
+    breed: str
+    dob: datetime
+    next_checkup: datetime
+    weight: float
+    status: str
+    owner_username: str
 
-    class Config:
-        orm_mode = True
+class AnimalDetails(BaseModel):
+    name: str
+    species: str
+    breed: str
+    dob: Optional[datetime]
+    next_checkup: Optional[datetime]
+    weight: Optional[float]
+    status: str = "healthy"
+
+    def dict(self, *args, **kwargs):
+        data = super().dict(*args, **kwargs)
+        for key, value in data.items():
+            if isinstance(value, date):
+                data[key] = datetime.combine(value, datetime.min.time())
+        return data

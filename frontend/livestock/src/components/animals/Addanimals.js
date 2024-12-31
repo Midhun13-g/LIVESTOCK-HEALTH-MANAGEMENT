@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { X } from 'lucide-react';
 import './Addanimals.css';
+import axios from 'axios';
 
 const Addanimals = ({ onClose, onAdd }) => {
   const [formData, setFormData] = useState({
@@ -12,21 +13,61 @@ const Addanimals = ({ onClose, onAdd }) => {
     status: 'healthy',
   });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (onAdd && typeof onAdd === 'function') {
-      onAdd(formData); // Ensure onAdd is a function before calling it
+  
+    // Get the token from localStorage (or wherever it's stored)
+    const token = localStorage.getItem('token');
+  
+    if (!token) {
+      alert("You must be logged in to add an animal.");
+      return;
     }
-    setFormData({
-      name: '',
-      species: '',
-      breed: '',
-      birthDate: '',
-      nextCheckup: '',
-      status: 'healthy',
-    }); // Reset form data after submit
-    onClose(); // Close the modal after submit
+  
+    // Prepare the data to send to the backend
+    const animalData = {
+      name: formData.name,
+      species: formData.species,
+      breed: formData.breed,
+      dob: formData.birthDate,  // This will be sent as a date string
+      next_checkup: formData.nextCheckup, // This will be sent as a date string
+      weight: formData.weight || null,  // Assuming weight is optional
+      status: formData.status,
+    };
+  
+    try {
+      const response = await axios.post(
+        'http://127.0.0.1:8000/animals/', 
+        animalData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, // Add the token to the Authorization header
+          }
+        }
+      );
+  
+      if (onAdd && typeof onAdd === 'function') {
+        onAdd(response.data); // Optionally pass the new animal data to the parent component
+      }
+  
+      // Reset form data and close modal after submission
+      setFormData({
+        name: '',
+        species: '',
+        breed: '',
+        birthDate: '',
+        nextCheckup: '',
+        weight: '',
+        status: 'healthy',
+      });
+  
+      onClose(); // Close the modal after successful submission
+    } catch (error) {
+      console.error("Error adding animal:", error.response?.data || error.message);
+      alert("Failed to add animal. Please check the form and try again.");
+    }
   };
+  
 
   return (
     <div className="modal-backdrop">
