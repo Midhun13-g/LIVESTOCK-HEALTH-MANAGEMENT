@@ -10,7 +10,7 @@ import SettingsPage from "./components/SettingsPage";
 import Register from "./components/Register";
 import Login from "./components/Login";
 import AIAssistant from "./components/AIAssistant";
-import Profile from "./components/Header/Profile";
+import Profile from "./components/Header/Profile/Profile";
 import Notifications from "./components/Header/Notification";
 import SearchResults from "./components/Header/SearchResults";
 import Diseases from "./components/Disease";

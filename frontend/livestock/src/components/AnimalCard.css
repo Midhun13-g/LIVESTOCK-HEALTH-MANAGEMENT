@@ -258,22 +258,29 @@ input[type="date"] {
 .status-indicator {
   font-size: 1rem;
   padding: 5px 10px;
-  border-radius: 4px;
+  margin-left: 100px;
 }
 
 .status-healthy {
   background-color: #28a745;
   color: white;
+  width: 55px;
+  border-radius: 5px;
+
 }
 
 .status-treatment {
   background-color: #ffc107;
   color: white;
+  border-radius: 3px;
+  width: 70px;
 }
 
 .status-critical {
   background-color: #dc3545;
   color: white;
+  border-radius: 3px;
+  width: 50px;
 }
 
 .animal-details-modal {
@@ -305,7 +312,7 @@ input[type="date"] {
 }
 
 .animal-card-buttons button {
-  margin: 5px;
+  margin: 6px;
 }
 .back-text {
   color: rgb(42, 142, 213);

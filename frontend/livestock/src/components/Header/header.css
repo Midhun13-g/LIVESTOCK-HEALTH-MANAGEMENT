@@ -2,8 +2,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #f8f9fa;
   padding: 10px 20px;
+  background-color: #f8f9fa;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
@@ -15,45 +15,25 @@
 .search-input {
   padding: 8px 12px;
   border: 1px solid #ccc;
-  border-radius: 20px;
-  outline: none;
-  font-size: 14px;
-  transition: border-color 0.3s ease;
-}
-
-.search-input:focus {
-  border-color: #007bff;
+  border-radius: 4px;
+  margin-right: 8px;
 }
 
 .search-icon-button {
   background: none;
   border: none;
-  margin-left: -30px;
   cursor: pointer;
-  padding: 0;
-}
-
-.search-icon {
-  color: #007bff;
-  width: 20px;
-  height: 20px;
 }
 
 .header-right {
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 16px;
 }
 
 .icon {
-  color: #6c757d;
-  width: 24px;
-  height: 24px;
-  transition: color 0.3s ease;
-}
-
-.icon:hover {
-  color: #007bff;
+  font-size: 24px;
+  color: #333;
 }
 
 .profile {
@@ -63,11 +43,47 @@
 }
 
 .profile-text {
-  font-size: 14px;
-  color: #6c757d;
-  transition: color 0.3s ease;
+  font-size: 16px;
+  color: #333;
 }
 
-.profile:hover .profile-text {
-  color: #007bff;
+.profile-overlay {
+  position: absolute;
+  top: 60px; /* Adjust according to the header height */
+  right: 20px;
+  background-color: #ffffff;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  width: 200px;
+}
+
+.profile-overlay-menu {
+  list-style: none;
+  margin: 0;
+  padding: 10px 0;
+}
+
+.profile-overlay-menu li {
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-size: 14px;
+  color: #333;
+}
+
+.profile-overlay-menu li:hover {
+  background-color: #f5f5f5;
+}
+
+.profile-overlay-menu li:active {
+  background-color: #e0e0e0;
+}
+
+@media (max-width: 768px) {
+  .profile-overlay {
+    right: 10px;
+    width: 180px;
+  }
 }

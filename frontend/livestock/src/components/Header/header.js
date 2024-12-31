@@ -6,10 +6,11 @@ import "./header.css";
 function Header() {
   const navigate = useNavigate(); // Initialize the navigation hook
   const [searchQuery, setSearchQuery] = useState(""); // State to store search input
+  const [showOverlay, setShowOverlay] = useState(false); // State to toggle overlay
 
-  // Navigate to the Profile page
+  // Toggle the profile overlay
   const handleProfileClick = () => {
-    navigate("/Profile");
+    setShowOverlay(!showOverlay);
   };
 
   // Navigate to the Notifications page
@@ -40,12 +41,26 @@ function Header() {
         </button>
       </form>
       <div className="header-right">
-        <Bell className="icon" onClick={handleNotificationClick} style={{ cursor: "pointer" }} />
+        <Bell
+          className="icon"
+          onClick={handleNotificationClick}
+          style={{ cursor: "pointer" }}
+        />
         <div className="profile" onClick={handleProfileClick} style={{ cursor: "pointer" }}>
           <User className="icon" />
           <span className="profile-text">Profile</span>
         </div>
       </div>
+      {showOverlay && (
+        <div className="profile-overlay">
+          <ul className="profile-overlay-menu">
+            <li onClick={() => navigate("/Profile")}>Your Profile</li>
+            <li onClick={() => navigate("/Notification")}>Notifications</li>
+            <li onClick={() => navigate("/settings")}>Settings</li>
+            <li onClick={() => navigate("/signout")}>Sign Out</li>
+          </ul>
+        </div>
+      )}
     </header>
   );
 }
