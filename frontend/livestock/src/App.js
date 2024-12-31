@@ -13,6 +13,7 @@ import AIAssistant from "./components/AIAssistant";
 import Profile from "./components/Header/Profile";
 import Notifications from "./components/Header/Notification";
 import SearchResults from "./components/Header/SearchResults";
+import Diseases from "./components/Disease";
 import "./App.css";
 
 function App() {
@@ -72,6 +73,10 @@ function App() {
             <Route
               path="/notifications"
               element={isLoggedIn ? <Notifications /> : <Navigate to="/login" />}
+            />
+            <Route
+              path="/diseases"
+              element={isLoggedIn ? <Diseases /> : <Navigate to="/login" />}
             />
             <Route
               path="/search"

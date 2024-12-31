@@ -39,6 +39,11 @@ function Sidebar() {
                AI Assistant
             </NavLink>
           </li>
+          <li>
+            <NavLink to="/diseases" className="sidebar-link" activeClassName="active">
+               Diseases 
+            </NavLink>
+          </li>
 
         </ul>
       </nav>
