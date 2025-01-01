@@ -10,47 +10,48 @@ const Addanimals = ({ onClose, onAdd }) => {
     breed: '',
     birthDate: '',
     nextCheckup: '',
+    weight: '',
     status: 'healthy',
   });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
     // Get the token from localStorage (or wherever it's stored)
     const token = localStorage.getItem('token');
-  
+
     if (!token) {
       alert("You must be logged in to add an animal.");
       return;
     }
-  
-    // Prepare the data to send to the backend
+
     const animalData = {
       name: formData.name,
       species: formData.species,
       breed: formData.breed,
-      dob: formData.birthDate,  // This will be sent as a date string
-      next_checkup: formData.nextCheckup, // This will be sent as a date string
-      weight: formData.weight || null,  // Assuming weight is optional
+      dob: formData.birthDate,
+      next_checkup: formData.nextCheckup,
+      weight: formData.weight,
       status: formData.status,
     };
-  
+
     try {
       const response = await axios.post(
         'http://127.0.0.1:8000/animals/', 
         animalData,
         {
           headers: {
-            Authorization: `Bearer ${token}`, // Add the token to the Authorization header
-          }
+            Authorization: `Bearer ${token}`,
+          },
         }
       );
-  
+
+      // Only call onAdd when the animal was successfully added
       if (onAdd && typeof onAdd === 'function') {
-        onAdd(response.data); // Optionally pass the new animal data to the parent component
+        onAdd(response.data); // Pass the new animal data to the parent component
       }
-  
-      // Reset form data and close modal after submission
+
+      // Reset form data after submission
       setFormData({
         name: '',
         species: '',
@@ -60,14 +61,13 @@ const Addanimals = ({ onClose, onAdd }) => {
         weight: '',
         status: 'healthy',
       });
-  
+
       onClose(); // Close the modal after successful submission
     } catch (error) {
       console.error("Error adding animal:", error.response?.data || error.message);
       alert("Failed to add animal. Please check the form and try again.");
     }
   };
-  
 
   return (
     <div className="modal-backdrop">
@@ -126,6 +126,16 @@ const Addanimals = ({ onClose, onAdd }) => {
               value={formData.nextCheckup}
               onChange={(e) => setFormData({ ...formData, nextCheckup: e.target.value })}
               required
+            />
+          </div>
+          <div>
+            <label>Weight (kg)</label>
+            <input
+              type="number"
+              value={formData.weight}
+              onChange={(e) => setFormData({ ...formData, weight: e.target.value })}
+              min="0"
+              step="0.1"
             />
           </div>
           <div>
