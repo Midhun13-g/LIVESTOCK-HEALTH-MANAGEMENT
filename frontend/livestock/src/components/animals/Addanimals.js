@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { X } from 'lucide-react';
 import './Addanimals.css';
-import axios from 'axios';
 
 const Addanimals = ({ onClose, onAdd }) => {
   const [formData, setFormData] = useState({
@@ -10,63 +9,23 @@ const Addanimals = ({ onClose, onAdd }) => {
     breed: '',
     birthDate: '',
     nextCheckup: '',
-    weight: '',
     status: 'healthy',
   });
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-
-    // Get the token from localStorage (or wherever it's stored)
-    const token = localStorage.getItem('token');
-
-    if (!token) {
-      alert("You must be logged in to add an animal.");
-      return;
+    if (onAdd && typeof onAdd === 'function') {
+      onAdd(formData); // Ensure onAdd is a function before calling it
     }
-
-    const animalData = {
-      name: formData.name,
-      species: formData.species,
-      breed: formData.breed,
-      dob: formData.birthDate,
-      next_checkup: formData.nextCheckup,
-      weight: formData.weight,
-      status: formData.status,
-    };
-
-    try {
-      const response = await axios.post(
-        'http://127.0.0.1:8000/animals/', 
-        animalData,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      // Only call onAdd when the animal was successfully added
-      if (onAdd && typeof onAdd === 'function') {
-        onAdd(response.data); // Pass the new animal data to the parent component
-      }
-
-      // Reset form data after submission
-      setFormData({
-        name: '',
-        species: '',
-        breed: '',
-        birthDate: '',
-        nextCheckup: '',
-        weight: '',
-        status: 'healthy',
-      });
-
-      onClose(); // Close the modal after successful submission
-    } catch (error) {
-      console.error("Error adding animal:", error.response?.data || error.message);
-      alert("Failed to add animal. Please check the form and try again.");
-    }
+    setFormData({
+      name: '',
+      species: '',
+      breed: '',
+      birthDate: '',
+      nextCheckup: '',
+      status: 'healthy',
+    }); // Reset form data after submit
+    onClose(); // Close the modal after submit
   };
 
   return (
@@ -129,16 +88,6 @@ const Addanimals = ({ onClose, onAdd }) => {
             />
           </div>
           <div>
-            <label>Weight (kg)</label>
-            <input
-              type="number"
-              value={formData.weight}
-              onChange={(e) => setFormData({ ...formData, weight: e.target.value })}
-              min="0"
-              step="0.1"
-            />
-          </div>
-          <div>
             <label>Status</label>
             <select
               value={formData.status}
@@ -162,4 +111,4 @@ const Addanimals = ({ onClose, onAdd }) => {
   );
 };
 
-export default Addanimals;
+export default Addanimals; 

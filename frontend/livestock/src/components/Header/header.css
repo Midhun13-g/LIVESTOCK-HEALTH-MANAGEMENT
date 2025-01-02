@@ -87,3 +87,15 @@
     width: 180px;
   }
 }
+
+body {
+  background: #fff; /* Ensure a white background */
+}
+
+.register-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f9f9f9; /* Custom background for Register page */
+}

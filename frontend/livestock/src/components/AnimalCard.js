@@ -1,112 +1,187 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
+import AnimalDetails from "./animals/details/AnimalDetails"; // Import AnimalDetails for detailed info
 import "./AnimalCard.css";
 
-function AnimalCard() {
-  const [animals, setAnimals] = useState([]);
-  const [error, setError] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
+function AnimalCard({
+  id,
+  name,
+  type,
+  status,
+  born,
+  nextCheckup,
+  insemination,
+  onRemove,
+  onSave,
+  onScheduleCheckup,
+}) {
+  const [isEditing, setIsEditing] = useState(false);
+  const [isViewingDetails, setIsViewingDetails] = useState(false);
+  const [editedAnimal, setEditedAnimal] = useState({
+    name,
+    type,
+    status,
+    born,
+    nextCheckup,
+    insemination,
+  });
 
-  // Fetch animals from the backend
-  const fetchAnimals = async () => {
-    setIsLoading(true); // Start loading
-    try {
-      const token = localStorage.getItem("token"); // Retrieve token from localStorage
-      if (!token) {
-        throw new Error("User is not authenticated. Token is missing.");
-      }
+  const calculateAge = (birthDate) => {
+    const birth = new Date(birthDate);
+    const today = new Date();
+    const years = today.getFullYear() - birth.getFullYear();
+    const months = today.getMonth() - birth.getMonth();
+    return months < 0 ? `${years - 1} years ${12 + months} months` : `${years} years ${months} months`;
+  };
 
-      const response = await fetch("http://localhost:8000/animals/", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setEditedAnimal((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
 
-      if (!response.ok) {
-        throw new Error(`Error: ${response.status} ${response.statusText}`);
-      }
-
-      const data = await response.json();
-      if (Array.isArray(data)) {
-        setAnimals(data); // Set animals in the state if the data is an array
-      } else {
-        throw new Error("Fetched data is not an array");
-      }
-
-      setError(null); // Clear any previous errors
-    } catch (err) {
-      setError(err.message); // Set error message
-      setAnimals([]); // Clear animals data on error
-    } finally {
-      setIsLoading(false); // Stop loading
+  const handleSave = () => {
+    if (typeof onSave === "function") {
+      onSave(editedAnimal);
+      setIsEditing(false);
+    } else {
+      console.error("onSave is not a function");
     }
   };
 
-  useEffect(() => {
-    fetchAnimals(); // Call fetchAnimals once when the component mounts
-  }, []); // Empty dependency array ensures this effect runs only once on mount
-
-  // Function to handle adding a new animal
-  const addNewAnimal = (newAnimal) => {
-    // Check if the new animal already exists in the list (based on ID)
-    setAnimals((prevAnimals) => {
-      const isDuplicate = prevAnimals.some((animal) => animal.id === newAnimal.id);
-      if (isDuplicate) {
-        console.log('Duplicate animal detected.');
-        return prevAnimals; // Return the previous animals list if duplicate
-      }
-      // Add new animal if not a duplicate
-      return [...prevAnimals, newAnimal];
-    });
-  };
-
-  if (isLoading) {
-    return <p>Loading animals...</p>;
-  }
-
-  if (error) {
-    return <p className="error-message">Error: {error}</p>;
-  }
+  const handleEdit = () => setIsEditing(true);
+  const handleCancel = () => setIsEditing(false);
+  const handleRemove = () => onRemove(id);
+  const handleViewDetails = () => setIsViewingDetails(true);
+  const handleHideDetails = () => setIsViewingDetails(false);
 
   return (
-    <div className="animal-card-container">
-      {animals.length === 0 ? (
-        <p>No animals found.</p>
-      ) : (
-        animals.map((animal) => (
-          <div key={animal.id} className="animal-card">
-            <div className="animal-card-header">
-              <h2 className="animal-card-title">{animal.name}</h2>
-              <p className="animal-card-type">{animal.species}</p>
-            </div>
-            <div className="animal-card-details">
-              <div className="info-row">
-                <p className="info-label">Status:</p>
-                <p className={`status-${animal.status} info-value`}>{animal.status}</p>
+    <div className="animal-card">
+      <div className="animal-card-details">
+        {isEditing ? (
+          <div className="edit-form-container show">
+            <div className="edit-form">
+              <button className="close" onClick={handleCancel}>&times;</button>
+              <h3>Edit Animal Details</h3>
+
+              <div className="form-group">
+                <label>Animal Name</label>
+                <input
+                  type="text"
+                  name="name"
+                  value={editedAnimal.name}
+                  onChange={handleChange}
+                />
               </div>
-              <div className="info-row">
-                <p className="info-label">Breed:</p>
-                <p className="info-value">{animal.breed}</p>
+              <div className="form-group">
+                <label>Type</label>
+                <input
+                  type="text"
+                  name="type"
+                  value={editedAnimal.type}
+                  onChange={handleChange}
+                />
               </div>
-              <div className="info-row">
-                <p className="info-label">Born:</p>
-                <p className="info-value">{new Date(animal.dob).toLocaleDateString()}</p>
+              <div className="form-group">
+                <label>Status</label>
+                <select
+                  name="status"
+                  value={editedAnimal.status}
+                  onChange={handleChange}
+                >
+                  <option value="healthy">Healthy</option>
+                  <option value="treatment">Treatment</option>
+                  <option value="critical">Critical</option>
+                </select>
               </div>
-              <div className="info-row">
-                <p className="info-label">Next Checkup:</p>
-                <p className="info-value">
-                  {animal.next_checkup ? new Date(animal.next_checkup).toLocaleDateString() : "Not Scheduled"}
-                </p>
+              <div className="form-group">
+                <label>Date of Birth</label>
+                <input
+                  type="date"
+                  name="born"
+                  value={editedAnimal.born}
+                  onChange={handleChange}
+                />
               </div>
-              <div className="info-row">
-                <p className="info-label">Weight:</p>
-                <p className="info-value">
-                  {animal.weight !== undefined && animal.weight !== null ? `${animal.weight} kg` : "Not provided"}
-                </p>
+              <div className="form-group">
+                <label>Next Checkup</label>
+                <input
+                  type="date"
+                  name="nextCheckup"
+                  value={editedAnimal.nextCheckup}
+                  onChange={handleChange}
+                />
+              </div>
+              <div className="form-group">
+                <label>Insemination Date (optional)</label>
+                <input
+                  type="date"
+                  name="insemination"
+                  value={editedAnimal.insemination}
+                  onChange={handleChange}
+                />
+              </div>
+
+              <div className="form-actions">
+                <button className="btn save-btn" onClick={handleSave}>
+                  Save
+                </button>
+                <button className="btn cancel-btn" onClick={handleCancel}>
+                  Cancel
+                </button>
               </div>
             </div>
           </div>
-        ))
-      )}
+        ) : (
+          <>
+            <div className="info-row">
+              <p className="info-label">Status:</p>
+              <p className={`status-${status} info-value`}>{status}</p>
+            </div>
+            <div className="info-row">
+              <p className="info-label">Born:</p>
+              <p className="info-value">{born}</p>
+            </div>
+            <div className="info-row">
+              <p className="info-label">Next Checkup:</p>
+              <p className="info-value">{nextCheckup}</p>
+            </div>
+            <div className="info-row">
+              <p className="info-label">Insemination Date:</p>
+              <p className="info-value">
+                {insemination || "Not Available"}
+              </p>
+            </div>
+
+            <div className="animal-card-buttons">
+              <button className="btn btn-primary" onClick={handleEdit}>
+                Edit
+              </button>
+              <button className="btn btn-info" onClick={handleViewDetails}>
+                View Details
+              </button>
+              <button className="btn btn-danger" onClick={handleRemove}>
+                Remove
+              </button>
+            </div>
+          </>
+        )}
+
+        {isViewingDetails && (
+          <div className="animal-details-modal">
+            <div className="modal-content">
+              <div className="modal-header">
+                <button className="back-button" onClick={handleHideDetails}>
+                  &lt; Back
+                </button>
+                <h3>{editedAnimal.name} - {calculateAge(editedAnimal.born)}</h3>
+              </div>
+              <AnimalDetails animal={{ id, ...editedAnimal }} />
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

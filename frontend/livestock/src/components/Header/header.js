@@ -26,6 +26,14 @@ function Header() {
     }
   };
 
+  // Handle Sign Out
+  const handleLogout = () => {
+    // Clear session or token storage
+    alert("Logged out successfully!");
+    navigate("/register"); // Redirect to the register page
+  };
+  
+
   return (
     <header className="header">
       <form className="search-container" onSubmit={handleSearch}>
@@ -57,7 +65,7 @@ function Header() {
             <li onClick={() => navigate("/Profile")}>Your Profile</li>
             <li onClick={() => navigate("/Notification")}>Notifications</li>
             <li onClick={() => navigate("/settings")}>Settings</li>
-            <li onClick={() => navigate("/signout")}>Sign Out</li>
+            <li onClick={handleLogout}>Sign Out</li>
           </ul>
         </div>
       )}
