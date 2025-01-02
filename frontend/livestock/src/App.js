@@ -6,7 +6,7 @@ import Dashboard from "./components/Dashboard";
 import AnimalPage from "./components/animals/AnimalPage";
 import HealthRecordsPage from "./components/HealthRecordsPage";
 import ReportsPage from "./components/ReportsPage";
-import SettingsPage from "./components/SettingsPage";
+import SettingsPage from "./components/Settings/SettingsPage";
 import Register from "./components/Register";
 import Login from "./components/Login";
 import AIAssistant from "./components/AIAssistant";
@@ -71,7 +71,7 @@ function App() {
               element={isLoggedIn ? <Profile /> : <Navigate to="/login" />}
             />
             <Route
-              path="/notifications"
+              path="/notification"
               element={isLoggedIn ? <Notifications /> : <Navigate to="/login" />}
             />
             <Route

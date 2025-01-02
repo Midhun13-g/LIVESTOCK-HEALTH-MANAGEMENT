@@ -14,8 +14,10 @@ function Header() {
   };
 
   // Navigate to the Notifications page
-  const handleNotificationClick = () => {
-    navigate("/Notification");
+  const handleNotificationClick = (event) => {
+    event.preventDefault(); // Prevent any default action on click
+    console.log("Navigating to Notifications...");
+    navigate("/Notification"); // Use navigate to go to the Notifications page
   };
 
   // Handle search bar action
@@ -32,7 +34,6 @@ function Header() {
     alert("Logged out successfully!");
     navigate("/register"); // Redirect to the register page
   };
-  
 
   return (
     <header className="header">

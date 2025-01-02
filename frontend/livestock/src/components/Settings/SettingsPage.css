@@ -1,0 +1,43 @@
+.settings-page {
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.settings-section {
+  margin-bottom: 20px;
+}
+
+.settings-item {
+  margin-bottom: 10px;
+}
+
+.settings-save-button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.settings-save-button:hover {
+  background-color: #0056b3;
+}
+
+.category-list {
+  list-style: none;
+  padding: 0;
+}
+
+.category-item {
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  margin-bottom: 8px;
+  border-radius: 4px;
+}
+
+.settings-loading {
+  font-size: 18px;
+  text-align: center;
+  padding: 20px;
+}
