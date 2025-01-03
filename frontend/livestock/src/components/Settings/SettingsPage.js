@@ -1,127 +1,118 @@
-import React, { useState } from "react";
-import "./SettingsPage.css";
+import React from 'react';
+import { useNotificationContext } from '../../contexts/NotificationContext';
+import './SettingsPage.css';
 
 const SettingsPage = () => {
-  // Default settings object
-  const defaultSettings = {
-    healthMonitoring: false,
-    vaccinationManagement: false,
-    nutritionTracking: false,
-    behaviorAnalysis: false,
-    teamManagement: false,
-    reportsAnalytics: false,
-    notificationChannels: {
-      email: false,
-      sms: false,
-      push: false,
-    },
-  };
-
-  const [settings, setSettings] = useState(defaultSettings);
-
-  // Toggle settings for each category
-  const toggleSetting = (setting) => {
-    setSettings((prevSettings) => ({
-      ...prevSettings,
-      [setting]: !prevSettings[setting],
-    }));
-  };
-
-  // Toggle notification channels
-  const toggleChannel = (channel) => {
-    setSettings((prevSettings) => ({
-      ...prevSettings,
-      notificationChannels: {
-        ...prevSettings.notificationChannels,
-        [channel]: !prevSettings.notificationChannels[channel],
-      },
-    }));
-  };
+  const { settings, toggleSetting, toggleChannel } = useNotificationContext();
 
   return (
     <div className="settings-page">
-      <div className="notifications-settings">
-        <h3>Settings</h3>
-        <div className="settings-list">
-          <label>
+      <h2>Settings</h2>
+      <div className="settings-list">
+        {/* Toggle switches for categories */}
+        <label>
+          Health Monitoring
+          <span className="switch">
             <input
               type="checkbox"
               checked={settings.healthMonitoring}
-              onChange={() => toggleSetting("healthMonitoring")}
+              onChange={() => toggleSetting('healthMonitoring')}
             />
-            Health Monitoring
-          </label>
-          <label>
+            <span className="slider"></span>
+          </span>
+        </label>
+        <label>
+          Vaccination Management
+          <span className="switch">
             <input
               type="checkbox"
               checked={settings.vaccinationManagement}
-              onChange={() => toggleSetting("vaccinationManagement")}
+              onChange={() => toggleSetting('vaccinationManagement')}
             />
-            Vaccination Management
-          </label>
-          <label>
+            <span className="slider"></span>
+          </span>
+        </label>
+        <label>
+          Nutrition Tracking
+          <span className="switch">
             <input
               type="checkbox"
               checked={settings.nutritionTracking}
-              onChange={() => toggleSetting("nutritionTracking")}
+              onChange={() => toggleSetting('nutritionTracking')}
             />
-            Nutrition Tracking
-          </label>
-          <label>
+            <span className="slider"></span>
+          </span>
+        </label>
+        <label>
+          Behavior Analysis
+          <span className="switch">
             <input
               type="checkbox"
               checked={settings.behaviorAnalysis}
-              onChange={() => toggleSetting("behaviorAnalysis")}
+              onChange={() => toggleSetting('behaviorAnalysis')}
             />
-            Behavior Analysis
-          </label>
-          <label>
+            <span className="slider"></span>
+          </span>
+        </label>
+        <label>
+          Team Management
+          <span className="switch">
             <input
               type="checkbox"
               checked={settings.teamManagement}
-              onChange={() => toggleSetting("teamManagement")}
+              onChange={() => toggleSetting('teamManagement')}
             />
-            Team Management
-          </label>
-          <label>
+            <span className="slider"></span>
+          </span>
+        </label>
+        <label>
+          Reports & Analytics
+          <span className="switch">
             <input
               type="checkbox"
               checked={settings.reportsAnalytics}
-              onChange={() => toggleSetting("reportsAnalytics")}
+              onChange={() => toggleSetting('reportsAnalytics')}
             />
-            Reports & Analytics
-          </label>
+            <span className="slider"></span>
+          </span>
+        </label>
 
-          <h4>Notification Channels</h4>
-          <label>
+        {/* Notification channels */}
+        <h4>Notification Channels</h4>
+        <label>
+          Email Notifications
+          <span className="switch">
             <input
               type="checkbox"
               checked={settings.notificationChannels.email}
-              onChange={() => toggleChannel("email")}
+              onChange={() => toggleChannel('email')}
             />
-            Email Notifications
-          </label>
-          <label>
+            <span className="slider"></span>
+          </span>
+        </label>
+        <label>
+          SMS Alerts
+          <span className="switch">
             <input
               type="checkbox"
               checked={settings.notificationChannels.sms}
-              onChange={() => toggleChannel("sms")}
+              onChange={() => toggleChannel('sms')}
             />
-            SMS Alerts
-          </label>
-          <label>
+            <span className="slider"></span>
+          </span>
+        </label>
+        <label>
+          Push Notifications
+          <span className="switch">
             <input
               type="checkbox"
               checked={settings.notificationChannels.push}
-              onChange={() => toggleChannel("push")}
+              onChange={() => toggleChannel('push')}
             />
-            Push Notifications
-          </label>
-        </div>
+            <span className="slider"></span>
+          </span>
+        </label>
       </div>
-
-      {/* Pass settings to Notification component
-      <Notification settings={settings} /> */}
     </div>
   );
 };

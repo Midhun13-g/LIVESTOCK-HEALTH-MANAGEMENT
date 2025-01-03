@@ -1,43 +1,122 @@
+/* Settings Page Container */
 .settings-page {
-  padding: 20px;
-  font-family: Arial, sans-serif;
+  padding: 30px;
+  background-color: #f8f9fa;
+  max-width: 900px;
+  margin: 0 auto;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.settings-section {
+/* Heading */
+.settings-page h2 {
+  font-size: 2rem;
+  color: #333;
   margin-bottom: 20px;
-}
-
-.settings-item {
-  margin-bottom: 10px;
-}
-
-.settings-save-button {
-  background-color: #007bff;
-  color: #fff;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.settings-save-button:hover {
-  background-color: #0056b3;
-}
-
-.category-list {
-  list-style: none;
-  padding: 0;
-}
-
-.category-item {
-  padding: 8px 12px;
-  border: 1px solid #ccc;
-  margin-bottom: 8px;
-  border-radius: 4px;
-}
-
-.settings-loading {
-  font-size: 18px;
   text-align: center;
-  padding: 20px;
+  font-weight: 600;
+}
+
+/* Settings List */
+.settings-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  font-size: 1.1rem;
+}
+
+/* Individual Setting Item */
+.settings-list label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1rem;
+  color: #555;
+}
+
+/* Switch Styles */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+/* Hide Default Checkbox */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* Slider (the actual switch) */
+.switch .slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: 0.4s;
+  border-radius: 34px;
+}
+
+/* Slider Before (the circle) */
+.switch .slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  border-radius: 50%;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  transition: 0.4s;
+}
+
+/* When the switch is checked, change the background and move the circle */
+input:checked + .slider {
+  background-color: #4CAF50;
+}
+
+input:checked + .slider:before {
+  transform: translateX(26px);
+}
+
+/* Text color when switch is toggled */
+input:checked + .slider {
+  background-color: #4CAF50;
+}
+
+input:checked + .slider:before {
+  transform: translateX(26px);
+}
+
+/* Notification Channels Section */
+.settings-page h4 {
+  margin-top: 40px;
+  font-size: 1.25rem;
+  color: #333;
+  font-weight: 500;
+  text-align: center;
+}
+
+/* Mobile Styles */
+@media (max-width: 768px) {
+  .settings-page {
+    padding: 20px;
+  }
+
+  .settings-list label {
+    font-size: 1rem;
+  }
+
+  .settings-page h2 {
+    font-size: 1.5rem;
+  }
+
+  .settings-page h4 {
+    font-size: 1.1rem;
+  }
 }

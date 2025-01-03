@@ -1,0 +1,123 @@
+/* DiseaseCard.css */
+
+/* Card Container */
+.disease-card {
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    position: relative; /* Set relative position to position the risk tag absolutely */
+    transition: all 0.3s ease;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    height: 100%;
+    overflow: hidden;
+  }
+  
+  .disease-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  }
+  
+  /* Risk Tag - Positioned at the top-right of the card */
+  .disease-card .risk {
+    font-size: 1.1em;
+    color: white;
+    font-weight: bold;
+    background-color: #e74c3c; /* Red color for high risk */
+    padding: 8px 15px;
+    border-radius: 20px;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 10;
+  }
+  
+  /* Disease Name and Details */
+  .disease-card h4 {
+    font-size: 1.8em;
+    color: #2c3e50;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .disease-card p {
+    font-size: 1.1em;
+    color: #7f8c8d;
+    margin: 8px 0;
+    line-height: 1.5;
+  }
+  
+  .disease-card strong {
+    color: #2c3e50;
+    font-weight: bold;
+  }
+  
+  /* Learn More Button */
+  .disease-card button {
+    background-color: #3498db;
+    color: white;
+    font-size: 1.1em;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+    margin-top: 20px;
+  }
+  
+  .disease-card button:hover {
+    background-color: #2980b9;
+    transform: scale(1.05);
+  }
+  
+  /* Key Symptoms */
+  .disease-card .key-symptoms {
+    font-size: 1em;
+    color: #95a5a6;
+    margin-top: 10px;
+    margin-bottom: 20px;
+  }
+  
+  .disease-card .key-symptoms span {
+    font-weight: bold;
+  }
+  
+  .disease-card .key-symptoms ul {
+    list-style-type: none;
+    padding-left: 0;
+  }
+  
+  .disease-card .key-symptoms li {
+    font-size: 1em;
+    color: #7f8c8d;
+    margin: 6px 0;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .disease-card {
+      padding: 15px;
+    }
+  
+    .disease-card h4 {
+      font-size: 1.6em;
+    }
+  
+    .disease-card p {
+      font-size: 1em;
+    }
+  
+    .disease-card button {
+      padding: 10px 20px;
+      font-size: 1em;
+    }
+  
+    .disease-card .risk {
+      font-size: 1em;
+    }
+  }
+  

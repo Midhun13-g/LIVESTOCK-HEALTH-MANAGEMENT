@@ -41,7 +41,7 @@ function Sidebar() {
           </li>
           <li>
             <NavLink to="/diseases" className="sidebar-link" activeClassName="active">
-               Diseases 
+               Disease Guide
             </NavLink>
           </li>
 

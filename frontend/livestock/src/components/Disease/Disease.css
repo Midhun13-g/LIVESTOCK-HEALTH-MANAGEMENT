@@ -1,0 +1,33 @@
+/* Disease.css */
+.disease-container {
+  font-family: 'Arial', sans-serif;
+  background-color: #f4f4f9;
+  padding: 40px;
+  text-align: center;
+}
+
+h1 {
+  font-size: 2.5em;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.filters {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.disease-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+  padding: 20px;
+}
+
+@media (max-width: 768px) {
+  .disease-grid {
+    grid-template-columns: 1fr;
+  }
+}

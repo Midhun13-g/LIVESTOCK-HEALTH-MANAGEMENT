@@ -13,7 +13,8 @@ import AIAssistant from "./components/AIAssistant";
 import Profile from "./components/Header/Profile/Profile";
 import Notifications from "./components/Header/Notification";
 import SearchResults from "./components/Header/SearchResults";
-import Diseases from "./components/Disease";
+import Diseases from "./components/Disease/Disease";
+import { NotificationProvider } from "./contexts/NotificationContext";  // Import the NotificationProvider
 import "./App.css";
 
 function App() {
@@ -25,69 +26,69 @@ function App() {
   };
 
   return (
-    <Router>
-      <div className="app-container">
-        {isLoggedIn && <Sidebar />}  {/* Show Sidebar only if logged in */}
-        <div className="main-content">
-          {isLoggedIn && <Header />}  {/* Show Header only if logged in */}
-          
-          <Routes>
-            {/* Redirect to Login if not logged in */}
-            <Route
-              path="/"
-              element={isLoggedIn ? <Navigate to="/dashboard" /> : <Login onLogin={handleLogin} />}
-            />
-            <Route
-              path="/login"
-              element={isLoggedIn ? <Navigate to="/dashboard" /> : <Login onLogin={handleLogin} />}
-            />
-            <Route path="/register" element={<Register />} />
-            <Route
-              path="/dashboard"
-              element={isLoggedIn ? <Dashboard /> : <Navigate to="/login" />}
-            />
-            <Route
-              path="/animals"
-              element={isLoggedIn ? <AnimalPage /> : <Navigate to="/login" />}
-            />
-            <Route
-              path="/health-records"
-              element={isLoggedIn ? <HealthRecordsPage /> : <Navigate to="/login" />}
-            />
-            <Route
-              path="/reports"
-              element={isLoggedIn ? <ReportsPage /> : <Navigate to="/login" />}
-            />
-            <Route
-              path="/settings"
-              element={isLoggedIn ? <SettingsPage /> : <Navigate to="/login" />}
-            />
-            <Route
-              path="/ai-assistant"
-              element={isLoggedIn ? <AIAssistant /> : <Navigate to="/login" />}
-            />
-            <Route
-              path="/profile"
-              element={isLoggedIn ? <Profile /> : <Navigate to="/login" />}
-            />
-            <Route
-              path="/notification"
-              element={isLoggedIn ? <Notifications /> : <Navigate to="/login" />}
-            />
-            <Route
-              path="/diseases"
-              element={isLoggedIn ? <Diseases /> : <Navigate to="/login" />}
-            />
-            <Route
-              path="/search"
-              element={isLoggedIn ? <SearchResults /> : <Navigate to="/login" />}
-            />
+    <NotificationProvider> {/* Wrap the app with NotificationProvider */}
+      <Router>
+        <div className="app-container">
+          {isLoggedIn && <Sidebar />}  {/* Show Sidebar only if logged in */}
+          <div className="main-content">
+            {isLoggedIn && <Header />}  {/* Show Header only if logged in */}
             
-            
-          </Routes>
+            <Routes>
+              {/* Redirect to Login if not logged in */}
+              <Route
+                path="/"
+                element={isLoggedIn ? <Navigate to="/dashboard" /> : <Login onLogin={handleLogin} />}
+              />
+              <Route
+                path="/login"
+                element={isLoggedIn ? <Navigate to="/dashboard" /> : <Login onLogin={handleLogin} />}
+              />
+              <Route path="/register" element={<Register />} />
+              <Route
+                path="/dashboard"
+                element={isLoggedIn ? <Dashboard /> : <Navigate to="/login" />}
+              />
+              <Route
+                path="/animals"
+                element={isLoggedIn ? <AnimalPage /> : <Navigate to="/login" />}
+              />
+              <Route
+                path="/health-records"
+                element={isLoggedIn ? <HealthRecordsPage /> : <Navigate to="/login" />}
+              />
+              <Route
+                path="/reports"
+                element={isLoggedIn ? <ReportsPage /> : <Navigate to="/login" />}
+              />
+              <Route
+                path="/settings"
+                element={isLoggedIn ? <SettingsPage /> : <Navigate to="/login" />}
+              />
+              <Route
+                path="/ai-assistant"
+                element={isLoggedIn ? <AIAssistant /> : <Navigate to="/login" />}
+              />
+              <Route
+                path="/profile"
+                element={isLoggedIn ? <Profile /> : <Navigate to="/login" />}
+              />
+              <Route
+                path="/notification"
+                element={isLoggedIn ? <Notifications /> : <Navigate to="/login" />}
+              />
+              <Route
+                path="/diseases"
+                element={isLoggedIn ? <Diseases /> : <Navigate to="/login" />}
+              />
+              <Route
+                path="/search"
+                element={isLoggedIn ? <SearchResults /> : <Navigate to="/login" />}
+              />
+            </Routes>
+          </div>
         </div>
-      </div>
-    </Router>
+      </Router>
+    </NotificationProvider> 
   );
 }
 
