@@ -4,7 +4,6 @@ import "./Filter.css";
 const Filter = ({ onSpeciesChange, onRiskChange }) => {
   return (
     <div className="filter-container">
-      <h3>Filter Options</h3>
       
       {/* Species Filter */}
       <select className="filter-dropdown" onChange={onSpeciesChange}>

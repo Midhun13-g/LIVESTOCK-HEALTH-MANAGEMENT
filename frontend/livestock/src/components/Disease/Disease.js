@@ -378,7 +378,7 @@ const Disease = () => {
 
   return (
     <div className="disease-container">
-      <h1>Disease Awareness Guide</h1>
+     
       <SearchBar onSearch={(term) => setSearchTerm(term)} />
       
       <div className="filters">

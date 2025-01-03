@@ -90,7 +90,7 @@
 
 .btn-info {
   background-color: #17a2b8;
-  color: white;
+  color: rgb(255, 255, 255);
 }
 
 .btn-info:hover {
@@ -217,6 +217,7 @@ input[type="date"] {
   margin-top: 20px;
 }
 
+
 .animal-card-buttons .btn {
   font-size: 0.9rem;
   padding: 8px 12px;
@@ -287,8 +288,8 @@ input[type="date"] {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
   background-color: rgba(0, 0, 0, 0.5);  /* Semi-transparent background */
   display: flex;
   justify-content: center;
@@ -300,7 +301,8 @@ input[type="date"] {
   background-color: rgb(249, 249, 249);
   padding: 10px;
   border-radius: 8px;
-  width: 900px;
+  width: 100%;
+  max-width: 1200px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
@@ -309,6 +311,7 @@ input[type="date"] {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
+  width: 600px;
 }
 
 .animal-card-buttons button {
@@ -322,4 +325,5 @@ input[type="date"] {
 .back-text:hover {
   color: rgb(13, 13, 141); /* Highlight on hover */
 }
+
 
