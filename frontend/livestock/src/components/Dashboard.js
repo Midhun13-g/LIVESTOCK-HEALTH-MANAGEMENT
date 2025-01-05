@@ -80,9 +80,9 @@ function Dashboard() {
       <div className="dashboard-header">
         <h1 className="dashboard-title">Livestock Health Management</h1>
         <div className="dashboard-buttons">
-          <button className="add-animal-btn" onClick={() => setIsFormVisible(true)}>
+          {/* <button className="add-animal-btn" onClick={() => setIsFormVisible(true)}>
             Add Animal
-          </button>
+          </button> */}
           <div className="filter-section">
             <button className="filter-btn">Filter</button>
             <select className="filter-dropdown" onChange={handleFilterChange}>
