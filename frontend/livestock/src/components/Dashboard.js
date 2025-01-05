@@ -84,7 +84,6 @@ function Dashboard() {
             Add Animal
           </button> */}
           <div className="filter-section">
-            <button className="filter-btn">Filter</button>
             <select className="filter-dropdown" onChange={handleFilterChange}>
               <option value="">All</option>
               <option value="healthy">Healthy</option>

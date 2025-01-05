@@ -1,7 +1,7 @@
 import React from "react";
 import "./Filter.css";
 
-const Filter = ({ onSpeciesChange, onRiskChange }) => {
+const Filter = ({ onSpeciesChange}) => {
   return (
     <div className="filter-container">
       
@@ -16,13 +16,8 @@ const Filter = ({ onSpeciesChange, onRiskChange }) => {
       </select>
       
       {/* Risk Filter */}
-      <select className="filter-dropdown" onChange={onRiskChange}>
-        <option value="all">All Risks</option>
-        <option value="high">High Risk</option>
-        <option value="medium">Medium Risk</option>
-        <option value="low">Low Risk</option>
-      </select>
-    </div>
+      </div>
+      
   );
 };
 

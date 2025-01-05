@@ -68,7 +68,7 @@ const Notification = () => {
 
   return (
     <div className="notification-container">
-      <h2>Notifications</h2>
+      <h1>Notifications</h1>
 
       {/* Mark All as Read Button */}
       <button className="mark-all-read" onClick={markAllAsRead}>

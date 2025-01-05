@@ -1,56 +1,154 @@
+/* AnimalPage.css */
+
+/* General Page Styling */
 .animal-page {
-  padding: 20px;
   font-family: Arial, sans-serif;
-  margin-top: 15px;
+  padding: 20px;
+  margin-top: 20px;
+  background-color: #f9f9f9;
 }
 
 .top-bar {
+  margin-left: 950px;
   display: flex;
   justify-content: flex-start;
-  margin-bottom: 16px;
+  align-items: center;
+  margin-bottom: 20px;
 }
 
 .add-animal-btn {
-  padding: 10px 16px;
+  padding: 10px 15px;
   background-color: #007bff;
   color: white;
   border: none;
-  border-radius: 6px;
+  border-radius: 5px;
   cursor: pointer;
-  font-size: 1rem;
-  transition: background-color 0.3s ease;
+  font-size: 14px;
+  font-size: 16px;
+  
+}
+.filter-btn
+{
+  padding: 10px 15px;
+  color: #172029;
+  background-color: rgb(243, 240, 240);
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  font-size: 16px;
 }
 
-.add-animal-btn:hover {
+.add-animal-btn{
+  height: 40px;
+}
+
+
+.add-animal-btn:hover,
+.filter-btn:hover {
   background-color: #0056b3;
 }
 
-.search-filter {
-  display: flex;
-  justify-content: space-between;
+/* Search Bar */
+.search-bar-container {
+  margin-top: -60px;
+  margin-left: -750px;
   margin-bottom: 20px;
 }
 
 .search-bar {
-  flex: 1;
+  max-width: 400px;
   padding: 10px;
-  font-size: 1rem;
   border: 1px solid #ccc;
-  border-radius: 6px;
+  border-radius: 5px;
+  font-size: 16px;
+  height: 38px;
+}
+
+/* Animal List */
+.animal-list {
+  margin-top: 20px;
+}
+
+/* Filter Overlay */
+.filter-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.filter-modal {
+  background: white;
+  width: 90%;
+  max-width: 400px;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.filter-modal h3 {
+  margin-bottom: 15px;
+  font-size: 18px;
+  color: #333;
+}
+
+.filter-options {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.filter-options select {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+  background-color: #fff;
+  cursor: pointer;
+}
+
+.apply-filter-btn,
+.close-filter-btn {
+  padding: 10px 15px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
   margin-right: 10px;
 }
 
-.filter-btn {
-  padding: 10px 16px;
-  background-color: #4caf50;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 1rem;
-  transition: background-color 0.3s ease;
+.close-filter-btn {
+  background-color: #dc3545;
+  margin-left: 167px;
 }
 
-.filter-btn:hover {
-  background-color: #3e8e41;
+.apply-filter-btn:hover {
+  background-color: #218838;
+}
+
+.close-filter-btn:hover {
+  background-color: #c82333;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }

@@ -4,7 +4,6 @@ import './ReportsPage.css';
 const ReportsPage = () => {
   const [reports, setReports] = useState([
     { name: 'Monthly Health Report', date: '2024-03-15', type: 'Health Report', status: 'completed' },
-    { name: 'Q1 Inventory Report', date: '2024-03-14', type: 'Inventory Report', status: 'pending' },
     { name: 'Annual Financial Summary', date: '2024-03-13', type: 'Financial Report', status: 'completed' },
   ]);
 
@@ -91,11 +90,12 @@ const ReportsPage = () => {
       <div className="buttons">
         <button onClick={() => setShowCreateReportModal(true)}>Generate Report</button>
         <button onClick={handleExportReports}>Export</button>
-      </div>
-
-      <button className="filter-toggle" onClick={toggleFilters}>
+        <button className="filter-togglee" onClick={toggleFilters}>
         {showFilters ? 'Hide Filters' : 'Show Filters'}
       </button>
+      </div>
+
+      
 
       {showFilters && (
         <div className="filters">

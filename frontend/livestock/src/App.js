@@ -4,7 +4,6 @@ import Sidebar from "./components/Sidebar";
 import Header from "./components/Header/header";
 import Dashboard from "./components/Dashboard";
 import AnimalPage from "./components/animals/AnimalPage";
-import HealthRecordsPage from "./components/HealthRecordsPage";
 import ReportsPage from "./components/ReportsPage";
 import SettingsPage from "./components/Settings/SettingsPage";
 import Register from "./components/Register";
@@ -12,7 +11,6 @@ import Login from "./components/Login";
 import AIAssistant from "./components/AIAssistant";
 import Profile from "./components/Header/Profile/Profile";
 import Notifications from "./components/Header/Notification";
-import SearchResults from "./components/Header/SearchResults";
 import Diseases from "./components/Disease/Disease";
 import Diseaseform from "./components/Diseaseform";
 import { NotificationProvider } from "./contexts/NotificationContext";  // Import the NotificationProvider
@@ -57,10 +55,7 @@ function App() {
               path="/diseaseform"
               element={isLoggedIn ? <Diseaseform /> : <Navigate to="/login" />}
             />
-              <Route
-                path="/health-records"
-                element={isLoggedIn ? <HealthRecordsPage /> : <Navigate to="/login" />}
-              />
+              
               <Route
                 path="/reports"
                 element={isLoggedIn ? <ReportsPage /> : <Navigate to="/login" />}
@@ -85,10 +80,7 @@ function App() {
                 path="/diseases"
                 element={isLoggedIn ? <Diseases /> : <Navigate to="/login" />}
               />
-              <Route
-                path="/search"
-                element={isLoggedIn ? <SearchResults /> : <Navigate to="/login" />}
-              />
+              
             </Routes>
           </div>
         </div>

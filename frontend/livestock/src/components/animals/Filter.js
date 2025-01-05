@@ -1,14 +1,6 @@
 import React, { useState } from 'react';
 import './Filter.css';
 
-// Example data to filter
-const animalsData = [
-  { id: 1, name: 'Bessie', species: 'cattle', status: 'healthy', birthDate: '2020-05-10', nextCheckup: '2024-01-15' },
-  { id: 2, name: 'Porky', species: 'pig', status: 'treatment', birthDate: '2019-08-22', nextCheckup: '2024-02-05' },
-  { id: 3, name: 'Woolly', species: 'sheep', status: 'critical', birthDate: '2021-03-18', nextCheckup: '2024-01-25' },
-  { id: 4, name: 'Moo', species: 'cattle', status: 'healthy', birthDate: '2022-01-01', nextCheckup: '2024-03-01' }
-  // Add more sample data as needed
-];
 
 const Filter = () => {
   // State for filter visibility

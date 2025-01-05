@@ -1,14 +1,16 @@
 /* SearchBar container */
 .search-bar {
   max-width: 400px;
-  margin: 20px auto;
   padding: 8px;
+  margin-bottom: 20px;
   background-color: #fff;
   border: 1px solid #ccc;
   border-radius: 4px;
   display: flex;
   align-items: center; /* Aligns the icon and input field */
   position: relative;
+  height: 45px;
+  margin-top: 0px;
 }
 
 /* Input field */
@@ -16,8 +18,8 @@
   width: 100%;
   padding: 10px 30px 10px 10px; /* Add extra padding for the icon */
   font-size: 1rem;
-  border: none;
-  outline: none;
+  border: 0px;
+  outline: 10px;
   color: #333;
   background-color: transparent; /* Transparent background to allow icon visibility */
 }
@@ -33,15 +35,7 @@
   color: #bbb;
 }
 
-/* Search Icon */
-.search-bar::before {
-  content: '\f002'; /* Unicode for Font Awesome search icon */
-  font-family: 'FontAwesome';
-  position: absolute;
-  left: 10px;
-  color: #007bff;
-  font-size: 1.2rem;
-}
+
 
 /* Hover effect */
 .search-bar:hover {

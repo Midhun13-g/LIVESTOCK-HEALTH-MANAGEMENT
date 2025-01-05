@@ -19,24 +19,21 @@ function Sidebar() {
               Animals
             </NavLink>
           </li>
-          <li>
-            <NavLink to="/health-records" className="sidebar-link" activeClassName="active">
-              Health Records
-            </NavLink>
-          </li>
+          
           <li>
             <NavLink to="/reports" className="sidebar-link" activeClassName="active">
               Reports
             </NavLink>
           </li>
-          <li>
-            <NavLink to="/settings" className="sidebar-link" activeClassName="active">
-             Settings
-            </NavLink>
-          </li>
+          
           <li>
             <NavLink to="/ai-assistant" className="sidebar-link" activeClassName="active">
                AI Assistant
+            </NavLink>
+          </li>
+          <li>
+            <NavLink to="/diseaseform" className="sidebar-link" activeClassName="active">
+               Disease Prediction
             </NavLink>
           </li>
           <li>
@@ -44,9 +41,10 @@ function Sidebar() {
                Disease Guide
             </NavLink>
           </li>
+          
           <li>
-            <NavLink to="/diseaseform" className="sidebar-link" activeClassName="active">
-               Disease 
+            <NavLink to="/settings" className="sidebar-link" activeClassName="active">
+             Settings
             </NavLink>
           </li>
 

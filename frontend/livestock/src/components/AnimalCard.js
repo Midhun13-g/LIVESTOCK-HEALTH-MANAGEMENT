@@ -11,8 +11,7 @@ function AnimalCard({
   nextCheckup,
   insemination,
   onRemove,
-  onSave,
-  onScheduleCheckup,
+  onSave
 }) {
   const [isEditing, setIsEditing] = useState(false);
   const [isViewingDetails, setIsViewingDetails] = useState(false);
@@ -135,6 +134,10 @@ function AnimalCard({
           </div>
         ) : (
           <>
+          <div className="info-row">
+              <p className="info-label">Name:</p>
+              <p className="info-value">{name}</p>
+            </div>
             <div className="info-row">
               <p className="info-label">Status:</p>
               <p className={`status-${status} info-value`}>{status}</p>

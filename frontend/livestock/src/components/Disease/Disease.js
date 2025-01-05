@@ -8,7 +8,7 @@ import "./Disease.css";
 const Disease = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedSpecies, setSelectedSpecies] = useState("all");
-  const [selectedRisk, setSelectedRisk] = useState("all");
+  // const [selectedRisk, setSelectedRisk] = useState("all");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedDisease, setSelectedDisease] = useState(null);
 
@@ -360,8 +360,7 @@ const Disease = () => {
         disease.keySymptoms.some((symptom) =>
           symptom.toLowerCase().includes(searchTerm.toLowerCase())
         )) &&
-      (selectedSpecies === "all" || disease.species === selectedSpecies) &&
-      (selectedRisk === "all" || disease.risk === selectedRisk)
+      (selectedSpecies === "all" || disease.species === selectedSpecies)
   );
 
   // Function to open the modal with disease details
@@ -383,8 +382,7 @@ const Disease = () => {
       
       <div className="filters">
         <Filter 
-          onSpeciesChange={(e) => setSelectedSpecies(e.target.value)} 
-          onRiskChange={(e) => setSelectedRisk(e.target.value)} 
+          onSpeciesChange={(e) => setSelectedSpecies(e.target.value)}  
         />
       </div>
 

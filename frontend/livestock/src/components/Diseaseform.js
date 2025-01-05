@@ -7,12 +7,12 @@ const DiseaseForm = () => {
   const [age, setAge] = useState("");
   const [temperature, setTemperature] = useState("");
   const [symptoms, setSymptoms] = useState(["", "", ""]);
-  const [predictions, setPredictions] = useState([]);  // Ensure it's an array by default
-  const [error, setError] = useState(""); // For error handling
+  const [predictions, setPredictions] = useState([]);
+  const [error, setError] = useState("");
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    
+
     const requestData = {
       animal,
       age: parseInt(age),
@@ -21,75 +21,89 @@ const DiseaseForm = () => {
     };
 
     try {
-      const response = await axios.post("http://127.0.0.1:8000/api/prediction/predict", requestData);
-      
-      console.log("API response:", response.data);  // Log the full response from the API
+      const response = await axios.post(
+        "http://127.0.0.1:8000/api/prediction/predict",
+        requestData
+      );
 
       if (response.data.predicted_diseases) {
-        setPredictions(response.data.predicted_diseases);  // Set predictions if available
-        setError(""); // Clear any previous errors
+        setPredictions(response.data.predicted_diseases);
+        setError("");
       } else {
         setError("No predictions found.");
       }
     } catch (error) {
-      console.error("Error fetching prediction:", error);
-      setPredictions([]);  // Clear predictions if there is an error
-      setError("There was an error processing your request.");  // Show error message
+      setPredictions([]);
+      setError("There was an error processing your request.");
     }
   };
 
-
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
+    <div className="disease-form-container">
+      <form onSubmit={handleSubmit} className="disease-form">
         <input
           type="text"
+          className="form-input"
           placeholder="Animal"
           value={animal}
           onChange={(e) => setAnimal(e.target.value)}
         />
         <input
           type="number"
+          className="form-input"
           placeholder="Age"
           value={age}
           onChange={(e) => setAge(e.target.value)}
         />
         <input
           type="number"
+          className="form-input"
           placeholder="Temperature"
           value={temperature}
           onChange={(e) => setTemperature(e.target.value)}
         />
         <input
           type="text"
+          className="form-input"
           placeholder="Symptom 1"
           value={symptoms[0]}
-          onChange={(e) => setSymptoms([e.target.value, symptoms[1], symptoms[2]])}
+          onChange={(e) =>
+            setSymptoms([e.target.value, symptoms[1], symptoms[2]])
+          }
         />
         <input
           type="text"
+          className="form-input"
           placeholder="Symptom 2"
           value={symptoms[1]}
-          onChange={(e) => setSymptoms([symptoms[0], e.target.value, symptoms[2]])}
+          onChange={(e) =>
+            setSymptoms([symptoms[0], e.target.value, symptoms[2]])
+          }
         />
         <input
           type="text"
+          className="form-input"
           placeholder="Symptom 3"
           value={symptoms[2]}
-          onChange={(e) => setSymptoms([symptoms[0], symptoms[1], e.target.value])}
+          onChange={(e) =>
+            setSymptoms([symptoms[0], symptoms[1], e.target.value])
+          }
         />
-        <button type="submit">Predict Disease</button>
+        <button type="submit" className="form-button">
+          Predict Disease
+        </button>
       </form>
 
-      {error && <div style={{color: 'red'}}>{error}</div>}  {/* Display error message */}
-      
+      {error && <div className="error-message">{error}</div>}
+
       {predictions && predictions.length > 0 && (
-        <div>
-          <h3>Predicted Diseases:</h3>
-          <ul>
+        <div className="predictions-container">
+          <h3 className="predictions-header">Predicted Diseases:</h3>
+          <ul className="predictions-list">
             {predictions.map((prediction, index) => (
-              <li key={index}>
-                {prediction.disease} (Confidence: {prediction.confidence.toFixed(2)})
+              <li key={index} className="prediction-item">
+                {prediction.disease} (Confidence:{" "}
+                {prediction.confidence.toFixed(2)})
               </li>
             ))}
           </ul>

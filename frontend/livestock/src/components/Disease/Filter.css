@@ -1,17 +1,11 @@
 /* Filter Container */
 .filter-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 15px;
-  padding: 15px;
-  background-color: #f9f9f9;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-left: 750px;
+  margin-top: -75px;
 }
 
 /* Dropdown Menus */
 .filter-dropdown {
-  padding: 10px;
   font-size: 1rem;
   border: 1px solid #ccc;
   border-radius: 4px;
