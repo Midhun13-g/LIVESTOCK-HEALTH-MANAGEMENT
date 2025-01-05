@@ -13,6 +13,7 @@ from dotenv import load_dotenv
 from models import AnimalDetails, User, UserInDB, Token, TokenData,Animal  # Import models from models.py
 from fastapi.middleware.cors import CORSMiddleware
 from chatbot import router as chatbot_router 
+from prediction_router import router as prediction_router
 
 load_dotenv()
 
@@ -196,6 +197,9 @@ async def get_animals(current_user: UserInDB = Depends(get_current_user)):
         del animal["_id"]
 
     return animals
+
+
+app.include_router(prediction_router, prefix="/api/prediction", tags=["Prediction"])
 
 
 app.include_router(chatbot_router, prefix="/chatbot", tags=["Chatbot"])

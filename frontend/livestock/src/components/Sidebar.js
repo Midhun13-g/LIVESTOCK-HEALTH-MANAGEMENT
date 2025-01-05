@@ -44,6 +44,11 @@ function Sidebar() {
                Disease Guide
             </NavLink>
           </li>
+          <li>
+            <NavLink to="/diseaseform" className="sidebar-link" activeClassName="active">
+               Disease 
+            </NavLink>
+          </li>
 
         </ul>
       </nav>

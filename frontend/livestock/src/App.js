@@ -14,6 +14,7 @@ import Profile from "./components/Header/Profile/Profile";
 import Notifications from "./components/Header/Notification";
 import SearchResults from "./components/Header/SearchResults";
 import Diseases from "./components/Disease/Disease";
+import Diseaseform from "./components/Diseaseform";
 import { NotificationProvider } from "./contexts/NotificationContext";  // Import the NotificationProvider
 import "./App.css";
 
@@ -52,6 +53,10 @@ function App() {
                 path="/animals"
                 element={isLoggedIn ? <AnimalPage /> : <Navigate to="/login" />}
               />
+              <Route
+              path="/diseaseform"
+              element={isLoggedIn ? <Diseaseform /> : <Navigate to="/login" />}
+            />
               <Route
                 path="/health-records"
                 element={isLoggedIn ? <HealthRecordsPage /> : <Navigate to="/login" />}
