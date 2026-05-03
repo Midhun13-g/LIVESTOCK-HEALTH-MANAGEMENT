@@ -4,11 +4,11 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-MONGO_URI = os.getenv("MONGO_URI")
+MONGO_URL = os.getenv("MONGO_URL")
 
-if not MONGO_URI:
-    raise ValueError("MONGO_URI is not set in environment variables")
-client = MongoClient(MONGO_URI)
+if not MONGO_URL:
+    raise ValueError("MONGO_URL is not set in environment variables")
+client = MongoClient(MONGO_URL)
 db = client["Livestock"]
 
 users_collection = db["users"]
