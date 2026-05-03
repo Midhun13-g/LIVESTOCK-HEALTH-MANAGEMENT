@@ -1,8 +1,3 @@
-# 🐾 Livestock Health Management System
-
-A full-stack web application for managing and monitoring livestock health — built for farmers and farm managers to track animal health, predict diseases, and stay on top of checkups.
-
----
 
 ## 🚀 Features
 
