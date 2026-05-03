@@ -6,8 +6,8 @@ import pandas as pd
 import os
 from notifications_router import create_notification
 
-# ADDED FOR DEPLOYMENT: env var takes priority; fallback to original local dev path
-MODELS_DIR = os.getenv("MODELS_DIR", r"D:\Codes\Models")
+BASE_DIR = os.path.dirname(__file__)
+MODELS_DIR = os.path.join(BASE_DIR, "models")
 
 # Load models at startup — wrapped so a missing dir doesn't crash unrelated routes
 try:
