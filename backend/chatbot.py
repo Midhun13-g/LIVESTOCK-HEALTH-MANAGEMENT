@@ -1,64 +1,96 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel
+from datetime import datetime, timezone
 import os
 from dotenv import load_dotenv
-import google.generativeai as genai
+from groq import Groq
+from database import chat_history_collection, animals_collection
 
-# Load environment variables
 load_dotenv()
 
-# Configure the Gemini API
-genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
+client = Groq(api_key=os.getenv("GROQ_API_KEY"))
 
-# Initialize the model
-generation_config = {
-    "temperature": 0.5,
-    "top_p": 0.95,
-    "top_k": 40,
-    "max_output_tokens": 8192,
-    "response_mime_type": "text/plain",
-}
-
-model = genai.GenerativeModel(
-    model_name="gemini-2.0-flash-exp",
-    generation_config=generation_config,
-    system_instruction="You're an AI assistant for a livestock health management system. Have your name as Cooper and introduce yourself as an AI assistant for this system. The user will contact you for any health-related queries of the livestock. Ask them for the symptoms and if you have doubts whether the livestock has caught any disease, let the users know. Ask as many questions as you want but always keep your texts neat, simple, and short. Advise the users on how to take care of their livestock based on your conversations or in general. You should only speak related to the livestock management application and not anything in general.",
+SYSTEM_PROMPT = (
+    "You are Cooper, an AI assistant for a livestock health management system. "
+    "You help farmers monitor and manage their livestock health. "
+    "Ask about symptoms, advise on care, and flag potential diseases. "
+    "Keep responses short, clear, and livestock-focused only."
 )
 
-# Define the message schema
 class Message(BaseModel):
     message: str
 
-# History to maintain the conversation state
-history = []
+def get_router(get_current_user_dep):
+    router = APIRouter()
 
-# Create a router for chatbot endpoints
-router = APIRouter()
+    @router.get("/")
+    def welcome():
+        return {"message": "Welcome to Cooper, the AI Assistant for Livestock Health Management!"}
 
-@router.get("/")
-def welcome():
-    return {"message": "Welcome to Cooper, the AI Assistant for Livestock Health Management!"}
+    @router.post("/chat")
+    def chat_with_cooper(msg: Message, current_user=Depends(get_current_user_dep)):
+        try:
+            # Fetch user's animals for context
+            animals = list(animals_collection.find(
+                {"owner_username": current_user.username},
+                {"_id": 0, "name": 1, "species": 1, "breed": 1, "status": 1}
+            ))
+            animal_context = ""
+            if animals:
+                animal_context = "User's livestock: " + ", ".join(
+                    f"{a['name']} ({a['species']}, status: {a.get('status','unknown')})"
+                    for a in animals
+                ) + ". "
 
-@router.post("/chat")
-def chat_with_cooper(msg: Message):
-    try:
-        user_input = msg.message
+            # Fetch last 10 messages from MongoDB
+            history_docs = list(chat_history_collection.find(
+                {"username": current_user.username},
+                {"_id": 0, "role": 1, "content": 1}
+            ).sort("created_at", -1).limit(10))
+            history_docs.reverse()
 
-        # Start a chat session
-        chat_session = model.start_chat(
-            history=history
-        )
+            # Build messages for Groq
+            messages = [{"role": "system", "content": SYSTEM_PROMPT}]
+            for h in history_docs:
+                messages.append({"role": h["role"], "content": h["content"]})
 
-        # Get the model response
-        response = chat_session.send_message(user_input)
-        model_response = response.text
+            # Add animal context + user message
+            user_content = animal_context + msg.message if animal_context else msg.message
+            messages.append({"role": "user", "content": user_content})
 
-        # Update the conversation history
-        history.append({"role": "user", "parts": [user_input]})
-        history.append({"role": "assistant", "parts": [model_response]})
+            response = client.chat.completions.create(
+                model="llama-3.3-70b-versatile",
+                messages=messages,
+                max_tokens=512,
+                temperature=0.5,
+            )
+            model_response = response.choices[0].message.content
 
-        # Return the chatbot's response
-        return {"response": model_response}
+            # Save to MongoDB
+            now = datetime.now(timezone.utc)
+            chat_history_collection.insert_many([
+                {"username": current_user.username, "role": "user", "content": msg.message, "created_at": now},
+                {"username": current_user.username, "role": "assistant", "content": model_response, "created_at": now},
+            ])
 
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+            return {"response": model_response}
+
+        except Exception as e:
+            raise HTTPException(status_code=500, detail=str(e))
+
+    @router.get("/history")
+    def get_chat_history(current_user=Depends(get_current_user_dep)):
+        history = list(chat_history_collection.find(
+            {"username": current_user.username},
+            {"_id": 0, "role": 1, "content": 1, "created_at": 1}
+        ).sort("created_at", 1).limit(50))
+        # Convert to parts format for frontend compatibility
+        result = [{"role": h["role"], "parts": [h["content"]], "created_at": h.get("created_at")} for h in history]
+        return {"history": result}
+
+    @router.delete("/history")
+    def clear_history(current_user=Depends(get_current_user_dep)):
+        chat_history_collection.delete_many({"username": current_user.username})
+        return {"message": "Chat history cleared"}
+
+    return router

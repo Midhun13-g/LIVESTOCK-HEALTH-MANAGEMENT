@@ -1,113 +1,53 @@
-import React, { useState } from 'react';
-import { FaCheck, FaTimes, FaEye } from 'react-icons/fa';
-import { useNotificationContext } from '../../contexts/NotificationContext';
-import './Notification.css';
+import React from "react";
+import { useNotificationContext } from "../../contexts/NotificationContext";
+import "./Notification.css";
 
-const Notification = () => {
-  const { settings } = useNotificationContext();
-  const [notifications, setNotifications] = useState([
-    {
-      id: 1,
-      category: "health_alert",
-      title: "Urgent Health Check Required",
-      description: "Cattle #C001 showing signs of respiratory distress",
-      date: "2025-01-01",
-      status: "unread",
-    },
-    {
-      id: 2,
-      category: "vaccination_due",
-      title: "Vaccination Due",
-      description: "FMD vaccination due for 5 cattle",
-      date: "2025-01-02",
-      status: "unread",
-    },
-    {
-      id: 3,
-      category: "general",
-      title: "Meeting Scheduled",
-      description: "Quarterly meeting scheduled for tomorrow.",
-      date: "2025-01-03",
-      status: "unread",
-    },
-  ]);
+const TYPE_ICON = { checkup: "📅", critical: "🚨", prediction: "🔬", general: "🔔" };
 
-  // Filter notifications based on settings
-  const filteredNotifications = notifications.filter((notif) => {
-    if (
-      (notif.category === "health_alert" && settings.healthMonitoring) ||
-      (notif.category === "vaccination_due" && settings.vaccinationManagement) ||
-      (notif.category === "general")
-    ) {
-      return true;
-    }
-    return false;
-  });
+const TYPE_COLOR = { checkup: "#2196f3", critical: "#f44336", prediction: "#9c27b0", general: "#607d8b" };
 
-  // Mark All Notifications as Read
-  const markAllAsRead = () => {
-    setNotifications(notifications.map((notif) => ({
-      ...notif,
-      status: 'read',
-    })));
-  };
-
-  // Handle Accept Action
-  const handleAccept = (id) => {
-    setNotifications(notifications.map((notif) => 
-      notif.id === id ? { ...notif, status: 'accepted' } : notif
-    ));
-  };
-
-  // Handle Reject Action
-  const handleReject = (id) => {
-    setNotifications(notifications.map((notif) => 
-      notif.id === id ? { ...notif, status: 'rejected' } : notif
-    ));
-  };
+const Notifications = () => {
+  const { notifications, unreadCount, markRead, markAllRead, remove } = useNotificationContext();
 
   return (
-    <div className="notification-container">
-      <h1>Notifications</h1>
-
-      {/* Mark All as Read Button */}
-      <button className="mark-all-read" onClick={markAllAsRead}>
-        Mark All as Read
-      </button>
-
-      {/* Display Notifications */}
-      <div className="notification-list">
-        {filteredNotifications.length === 0 ? (
-          <p className="no-notifications">No notifications to display.</p>
-        ) : (
-          filteredNotifications.map((notif) => (
-            <div key={notif.id} className="notification-item">
-              <h3>{notif.title}</h3>
-              <p>{notif.description}</p>
-              <p className="date">{notif.date}</p>
-
-              {/* Accept/Reject and Status */}
-              <div className="icons">
-                {notif.status === 'unread' && (
-                  <>
-                    <FaCheck
-                      onClick={() => handleAccept(notif.id)}
-                      style={{ color: 'green' }}
-                    />
-                    <FaTimes
-                      onClick={() => handleReject(notif.id)}
-                      style={{ color: 'red' }}
-                    />
-                  </>
-                )}
-                {notif.status === 'read' && <FaEye style={{ color: 'blue' }} />}
-              </div>
-            </div>
-          ))
+    <div className="nc-page">
+      <div className="nc-header">
+        <div className="nc-title">
+          <h2>Notifications</h2>
+          {unreadCount > 0 && <span className="nc-count">{unreadCount} unread</span>}
+        </div>
+        {unreadCount > 0 && (
+          <button className="nc-mark-all" onClick={markAllRead}>✓ Mark all as read</button>
         )}
       </div>
+
+      {notifications.length === 0 ? (
+        <div className="nc-empty">
+          <span>🔔</span>
+          <p>No notifications yet</p>
+        </div>
+      ) : (
+        <div className="nc-list">
+          {notifications.map((n) => (
+            <div key={n.id} className={`nc-item ${n.read ? "nc-read" : "nc-unread"}`}
+              style={{ borderLeftColor: TYPE_COLOR[n.type] || "#607d8b" }}>
+              <span className="nc-icon">{TYPE_ICON[n.type] || "🔔"}</span>
+              <div className="nc-body">
+                <p className="nc-msg">{n.message}</p>
+                <small className="nc-time">{new Date(n.created_at).toLocaleString()}</small>
+              </div>
+              <div className="nc-actions">
+                {!n.read && (
+                  <button className="nc-btn-read" onClick={() => markRead(n.id)}>✓</button>
+                )}
+                <button className="nc-btn-del" onClick={() => remove(n.id)}>✕</button>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
 
-export default Notification;
+export default Notifications;

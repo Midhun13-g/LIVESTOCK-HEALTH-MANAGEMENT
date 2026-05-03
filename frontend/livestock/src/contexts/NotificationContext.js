@@ -1,49 +1,55 @@
-import React, { createContext, useState, useContext } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import api from '../api';
+import { useAuth } from './AuthContext';
 
-// Create a Context for Notifications
 const NotificationContext = createContext();
+export const useNotificationContext = () => useContext(NotificationContext);
 
-// Custom hook to access notification context
-export const useNotificationContext = () => {
-  return useContext(NotificationContext);
-};
+const POLL_INTERVAL = 30000; // 30 seconds
 
-// Provider component to wrap around your app and manage settings
 export const NotificationProvider = ({ children }) => {
-  const [settings, setSettings] = useState({
-    healthMonitoring: true,
-    vaccinationManagement: true,
-    nutritionTracking: true,
-    behaviorAnalysis: true,
-    teamManagement: true,
-    reportsAnalytics: true,
-    notificationChannels: {
-      email: true,
-      sms: true,
-      push: true,
-    },
-    emailFrequency: "Daily Digest",
-  });
+  const { isLoggedIn } = useAuth();
+  const [notifications, setNotifications] = useState([]);
 
-  const toggleSetting = (settingKey) => {
-    setSettings((prev) => ({
-      ...prev,
-      [settingKey]: !prev[settingKey],
-    }));
+  const fetch = useCallback(() => {
+    if (!isLoggedIn) return;
+    api.get('/notifications/')
+      .then((res) => setNotifications(res.data))
+      .catch(() => {});
+  }, [isLoggedIn]);
+
+  useEffect(() => {
+    if (!isLoggedIn) { setNotifications([]); return; }
+    fetch();
+    const id = setInterval(fetch, POLL_INTERVAL);
+    return () => clearInterval(id);
+  }, [isLoggedIn, fetch]);
+
+  const markRead = async (notifId) => {
+    try {
+      await api.patch(`/notifications/${notifId}/read`);
+      setNotifications((prev) => prev.map((n) => n.id === notifId ? { ...n, read: true } : n));
+    } catch {}
   };
 
-  const toggleChannel = (channel) => {
-    setSettings((prev) => ({
-      ...prev,
-      notificationChannels: {
-        ...prev.notificationChannels,
-        [channel]: !prev.notificationChannels[channel],
-      },
-    }));
+  const markAllRead = async () => {
+    try {
+      await api.patch('/notifications/read-all');
+      setNotifications((prev) => prev.map((n) => ({ ...n, read: true })));
+    } catch {}
   };
+
+  const remove = async (notifId) => {
+    try {
+      await api.delete(`/notifications/${notifId}`);
+      setNotifications((prev) => prev.filter((n) => n.id !== notifId));
+    } catch {}
+  };
+
+  const unreadCount = notifications.filter((n) => !n.read).length;
 
   return (
-    <NotificationContext.Provider value={{ settings, toggleSetting, toggleChannel }}>
+    <NotificationContext.Provider value={{ notifications, unreadCount, markRead, markAllRead, remove, refresh: fetch }}>
       {children}
     </NotificationContext.Provider>
   );

@@ -1,76 +1,91 @@
-import React, { useState } from "react";
-import Addanimals from "./Addanimals"; // Import the AddAnimalModal component
-import AnimalList from "./AnimalList"; // Import the AnimalList component
-import "./AnimalPage.css"; // Import the CSS
-
-const initialAnimals = [
-  { id: 1, name: "Bella", species: "Cattle", breed: "Holstein", birthDate: "2020-05-12", nextCheckup: "2024-01-15", status: "healthy" },
-  { id: 2, name: "Max", species: "Pig", breed: "Berkshire", birthDate: "2021-03-20", nextCheckup: "2024-03-10", status: "treatment" },
-];
+import React, { useState, useEffect, useMemo } from "react";
+import Addanimals from "./Addanimals";
+import AnimalList from "./AnimalList";
+import "./AnimalPage.css";
+import api from "../../api";
+import { getSettings } from "../../contexts/settings";
 
 const AnimalPage = () => {
-  const [animals, setAnimals] = useState(initialAnimals);
+  const [animals, setAnimals]         = useState([]);
+  const [loading, setLoading]         = useState(true);
+  const [error, setError]             = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-  const [filters, setFilters] = useState({ species: "", status: "", sortBy: "name" });
+  const [filters, setFilters] = useState(() => { const s = getSettings(); return { species: "", status: s.animals.defaultStatus, sortBy: s.animals.defaultSort, checkupStatus: "" }; });
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
 
+  const fetchAnimals = () => {
+    setLoading(true);
+    api.get("/animals/")
+      .then((res) => setAnimals(res.data))
+      .catch((err) => {
+        if (err.response?.status === 404) setAnimals([]);
+        else setError("Failed to load animals.");
+      })
+      .finally(() => setLoading(false));
+  };
+
+  useEffect(() => { fetchAnimals(); }, []);
+
+  // Bug fix: handleAddAnimal only updates state — Addanimals already posted to API
   const handleAddAnimal = (newAnimal) => {
-    setAnimals([...animals, { ...newAnimal, id: animals.length + 1 }]); // Add new animal with unique ID
+    setAnimals((prev) => [...prev, newAnimal]);
+    setIsModalOpen(false);
   };
 
-  const handleFilterChange = (e) => {
-    const { name, value } = e.target;
-    setFilters((prev) => ({ ...prev, [name]: value }));
+  const handleRemove = async (id) => {
+    try {
+      await api.delete(`/animals/${id}`);
+      setAnimals((prev) => prev.filter((a) => a.id !== id));
+    } catch {
+      alert("Failed to delete animal.");
+    }
   };
 
-  const applyFilters = () => {
-    let filtered = initialAnimals;
-
-    if (searchQuery) {
-      filtered = filtered.filter((animal) =>
-        animal.name.toLowerCase().includes(searchQuery.toLowerCase())
-      );
+  const handleSave = async (updated) => {
+    try {
+      const res = await api.put(`/animals/${updated.id}`, updated);
+      setAnimals((prev) => prev.map((a) => (a.id === updated.id ? res.data : a)));
+    } catch {
+      alert("Failed to update animal.");
     }
-
-    if (filters.species) {
-      filtered = filtered.filter((animal) => animal.species.toLowerCase() === filters.species.toLowerCase());
-    }
-
-    if (filters.status) {
-      filtered = filtered.filter((animal) => animal.status.toLowerCase() === filters.status.toLowerCase());
-    }
-
-    if (filters.sortBy === "name") {
-      filtered.sort((a, b) => a.name.localeCompare(b.name));
-    } else if (filters.sortBy === "date") {
-      filtered.sort((a, b) => new Date(a.birthDate) - new Date(b.birthDate));
-    } else if (filters.sortBy === "checkup") {
-      filtered.sort((a, b) => new Date(a.nextCheckup) - new Date(b.nextCheckup));
-    }
-
-    return filtered;
   };
 
-  const filteredAnimals = applyFilters();
+  const resetFilters = () => setFilters({ species: "", status: "", sortBy: "checkup_asc", checkupStatus: "" });
+
+  // Bug fix: use useMemo so applyFilters only runs once per render
+  const filtered = useMemo(() => {
+    let list = [...animals];
+    if (searchQuery)    list = list.filter((a) => a.name.toLowerCase().includes(searchQuery.toLowerCase()));
+    if (filters.species)       list = list.filter((a) => a.species.toLowerCase() === filters.species.toLowerCase());
+    if (filters.status)        list = list.filter((a) => a.status.toLowerCase() === filters.status.toLowerCase());
+    if (filters.checkupStatus) list = list.filter((a) => a.checkup_status === filters.checkupStatus);
+    if (filters.sortBy === "name")         list.sort((a, b) => a.name.localeCompare(b.name));
+    if (filters.sortBy === "checkup_asc")  list.sort((a, b) => new Date(a.next_checkup) - new Date(b.next_checkup));
+    if (filters.sortBy === "checkup_desc") list.sort((a, b) => new Date(b.next_checkup) - new Date(a.next_checkup));
+    return list;
+  }, [animals, searchQuery, filters]);
+
+  const hasActiveFilters = filters.species || filters.status || filters.checkupStatus || filters.sortBy !== "checkup_asc";
+
+  if (loading) return <div className="animal-page"><p className="ap-state">Loading animals...</p></div>;
+  if (error)   return <div className="animal-page"><p className="ap-state error">{error}</p></div>;
 
   return (
     <div className="animal-page">
-      {/* Add Animal Button */}
+
+      {/* Top bar */}
       <div className="top-bar">
-        <button onClick={() => setIsModalOpen(true)} className="add-animal-btn">
-          Add New Animal
+        <button onClick={() => setIsModalOpen(true)} className="add-animal-btn">+ Add Animal</button>
+        <button onClick={() => setIsFilterOpen(true)} className={`filter-btn ${hasActiveFilters ? "filter-btn-active" : ""}`}>
+          ⚙ Filters {hasActiveFilters && <span className="filter-badge">●</span>}
         </button>
-        <button
-          onClick={() => setIsFilterOpen(true)}
-          className="filter-btn"
-          style={{ marginLeft: "10px" }}
-        >
-          Filters
-        </button>
+        {hasActiveFilters && (
+          <button onClick={resetFilters} className="reset-btn">✕ Reset</button>
+        )}
       </div>
 
-      {/* Search Bar */}
+      {/* Search */}
       <div className="search-bar-container">
         <input
           type="text"
@@ -81,44 +96,73 @@ const AnimalPage = () => {
         />
       </div>
 
-      {/* Animal List Section */}
-      <AnimalList animals={filteredAnimals} />
+      {/* Animal list */}
+      {filtered.length === 0
+        ? <p className="ap-state">No animals found.</p>
+        : <AnimalList animals={filtered} onRemove={handleRemove} onSave={handleSave} />
+      }
 
-      {/* Add Animal Modal */}
+      {/* Add animal modal */}
       {isModalOpen && (
         <Addanimals onClose={() => setIsModalOpen(false)} onAdd={handleAddAnimal} />
       )}
 
-      {/* Filter Modal */}
+      {/* Filter modal */}
       {isFilterOpen && (
-        <div className="filter-overlay">
+        <div className="filter-overlay" onClick={(e) => e.target === e.currentTarget && setIsFilterOpen(false)}>
           <div className="filter-modal">
-            <h3>Filter Options</h3>
-            <div className="filter-options">
-              <select name="species" value={filters.species} onChange={handleFilterChange}>
-                <option value="">All Species</option>
-                <option value="Cattle">Cattle</option>
-                <option value="Pig">Pig</option>
-                <option value="Sheep">Sheep</option>
-              </select>
-              <select name="status" value={filters.status} onChange={handleFilterChange}>
-                <option value="">All Statuses</option>
-                <option value="healthy">Healthy</option>
-                <option value="treatment">Treatment</option>
-                <option value="critical">Critical</option>
-              </select>
-              <select name="sortBy" value={filters.sortBy} onChange={handleFilterChange}>
-                <option value="name">Name</option>
-                <option value="date">Birth Date</option>
-                <option value="checkup">Next Checkup</option>
-              </select>
+            <div className="filter-modal-header">
+              <h3>Filter Animals</h3>
+              <button className="filter-close-x" onClick={() => setIsFilterOpen(false)}>✕</button>
             </div>
-            <button className="apply-filter-btn" onClick={() => setIsFilterOpen(false)}>
-              Apply Filter
-            </button>
-            <button className="close-filter-btn" onClick={() => setIsFilterOpen(false)}>
-              Close
-            </button>
+            <div className="filter-options">
+              <div className="filter-option-group">
+                <label className="filter-label">Species</label>
+                <select value={filters.species} onChange={(e) => setFilters({ ...filters, species: e.target.value })}>
+                  <option value="">All Species</option>
+                  <option value="Cow">🐄 Cow</option>
+                  <option value="Cattle">🐄 Cattle</option>
+                  <option value="Pig">🐷 Pig</option>
+                  <option value="Sheep">🐑 Sheep</option>
+                  <option value="Goat">🐐 Goat</option>
+                  <option value="Horse">🐴 Horse</option>
+                  <option value="Chicken">🐔 Chicken</option>
+                </select>
+              </div>
+              <div className="filter-option-group">
+                <label className="filter-label">Checkup Status</label>
+                <select value={filters.checkupStatus} onChange={(e) => setFilters({ ...filters, checkupStatus: e.target.value })}>
+                  <option value="">All</option>
+                  <option value="overdue">🔴 Overdue</option>
+                  <option value="today">🟠 Today</option>
+                  <option value="upcoming">🟡 Upcoming (7 days)</option>
+                  <option value="scheduled">🔵 Scheduled (30 days)</option>
+                  <option value="future">🟢 Future</option>
+                  <option value="unknown">⚪ No date</option>
+                </select>
+              </div>
+              <div className="filter-option-group">
+                <label className="filter-label">Health Status</label>
+                <select value={filters.status} onChange={(e) => setFilters({ ...filters, status: e.target.value })}>
+                  <option value="">All Statuses</option>
+                  <option value="healthy">✅ Healthy</option>
+                  <option value="treatment">⚠️ Treatment</option>
+                  <option value="critical">🚨 Critical</option>
+                </select>
+              </div>
+              <div className="filter-option-group">
+                <label className="filter-label">Sort By</label>
+                <select value={filters.sortBy} onChange={(e) => setFilters({ ...filters, sortBy: e.target.value })}>
+                  <option value="checkup_asc">Checkup Date ↑ Ascending</option>
+                  <option value="checkup_desc">Checkup Date ↓ Descending</option>
+                  <option value="name">Name A–Z</option>
+                </select>
+              </div>
+            </div>
+            <div className="filter-modal-footer">
+              <button className="reset-filters-btn" onClick={() => { resetFilters(); setIsFilterOpen(false); }}>Reset</button>
+              <button className="apply-filter-btn" onClick={() => setIsFilterOpen(false)}>Apply Filters</button>
+            </div>
           </div>
         </div>
       )}

@@ -1,5 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
+import { AuthProvider, useAuth } from "./contexts/AuthContext";
+import { NotificationProvider } from "./contexts/NotificationContext";
 import Sidebar from "./components/Sidebar";
 import Header from "./components/Header/header";
 import Dashboard from "./components/Dashboard";
@@ -13,79 +15,48 @@ import Profile from "./components/Header/Profile/Profile";
 import Notifications from "./components/Header/Notification";
 import Diseases from "./components/Disease/Disease";
 import Diseaseform from "./components/Diseaseform";
-import { NotificationProvider } from "./contexts/NotificationContext";  // Import the NotificationProvider
 import "./App.css";
 
-function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+const ProtectedRoute = ({ children }) => {
+  const { isLoggedIn } = useAuth();
+  return isLoggedIn ? children : <Navigate to="/login" />;
+};
 
-  // A function to handle successful login
-  const handleLogin = () => {
-    setIsLoggedIn(true);
-  };
-
+function AppRoutes() {
+  const { isLoggedIn } = useAuth();
   return (
-    <NotificationProvider> {/* Wrap the app with NotificationProvider */}
-      <Router>
-        <div className="app-container">
-          {isLoggedIn && <Sidebar />}  {/* Show Sidebar only if logged in */}
-          <div className="main-content">
-            {isLoggedIn && <Header />}  {/* Show Header only if logged in */}
-            
-            <Routes>
-              {/* Redirect to Login if not logged in */}
-              <Route
-                path="/"
-                element={isLoggedIn ? <Navigate to="/dashboard" /> : <Login onLogin={handleLogin} />}
-              />
-              <Route
-                path="/login"
-                element={isLoggedIn ? <Navigate to="/dashboard" /> : <Login onLogin={handleLogin} />}
-              />
-              <Route path="/register" element={<Register />} />
-              <Route
-                path="/dashboard"
-                element={isLoggedIn ? <Dashboard /> : <Navigate to="/login" />}
-              />
-              <Route
-                path="/animals"
-                element={isLoggedIn ? <AnimalPage /> : <Navigate to="/login" />}
-              />
-              <Route
-              path="/diseaseform"
-              element={isLoggedIn ? <Diseaseform /> : <Navigate to="/login" />}
-            />
-              
-              <Route
-                path="/reports"
-                element={isLoggedIn ? <ReportsPage /> : <Navigate to="/login" />}
-              />
-              <Route
-                path="/settings"
-                element={isLoggedIn ? <SettingsPage /> : <Navigate to="/login" />}
-              />
-              <Route
-                path="/ai-assistant"
-                element={isLoggedIn ? <AIAssistant /> : <Navigate to="/login" />}
-              />
-              <Route
-                path="/profile"
-                element={isLoggedIn ? <Profile /> : <Navigate to="/login" />}
-              />
-              <Route
-                path="/notification"
-                element={isLoggedIn ? <Notifications /> : <Navigate to="/login" />}
-              />
-              <Route
-                path="/diseases"
-                element={isLoggedIn ? <Diseases /> : <Navigate to="/login" />}
-              />
-              
-            </Routes>
-          </div>
-        </div>
-      </Router>
-    </NotificationProvider> 
+    <div className="app-container">
+      {isLoggedIn && <Sidebar />}
+      <div className="main-content">
+        {isLoggedIn && <Header />}
+        <Routes>
+          <Route path="/" element={isLoggedIn ? <Navigate to="/dashboard" /> : <Navigate to="/login" />} />
+          <Route path="/login" element={isLoggedIn ? <Navigate to="/dashboard" /> : <Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/dashboard"    element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+          <Route path="/animals"      element={<ProtectedRoute><AnimalPage /></ProtectedRoute>} />
+          <Route path="/diseaseform"  element={<ProtectedRoute><Diseaseform /></ProtectedRoute>} />
+          <Route path="/reports"      element={<ProtectedRoute><ReportsPage /></ProtectedRoute>} />
+          <Route path="/settings"     element={<ProtectedRoute><SettingsPage /></ProtectedRoute>} />
+          <Route path="/ai-assistant" element={<ProtectedRoute><AIAssistant /></ProtectedRoute>} />
+          <Route path="/profile"      element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+          <Route path="/notification" element={<ProtectedRoute><Notifications /></ProtectedRoute>} />
+          <Route path="/diseases"     element={<ProtectedRoute><Diseases /></ProtectedRoute>} />
+        </Routes>
+      </div>
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <Router>
+      <AuthProvider>
+        <NotificationProvider>
+          <AppRoutes />
+        </NotificationProvider>
+      </AuthProvider>
+    </Router>
   );
 }
 

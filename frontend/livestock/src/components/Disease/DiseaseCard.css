@@ -1,148 +1,94 @@
-/* Card Container */
-.disease-card {
-  background: linear-gradient(145deg, #f8f9fa, #ffffff); /* Subtle gradient background */
-  border: 1px solid #e0e0e0; /* Light border for a clean look */
-  border-radius: 16px; /* Slightly rounded corners */
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
-  padding: 25px;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+.dc-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 22px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+  border-top: 4px solid #e2e8f0;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  height: 420px;
-  cursor: pointer;
-  overflow: hidden;
-  position: relative;
+  gap: 14px;
+  transition: transform 0.2s, box-shadow 0.2s;
+  animation: dcFadeIn 0.3s ease;
+}
+.dc-card:hover { transform: translateY(-4px); box-shadow: 0 10px 28px rgba(0,0,0,0.11); }
+.dc-card.risk-high   { border-top-color: #ef4444; }
+.dc-card.risk-medium { border-top-color: #f59e0b; }
+.dc-card.risk-low    { border-top-color: #22c55e; }
+
+.dc-card-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
+.dc-card-title { font-size: 1rem; font-weight: 700; color: #1e293b; margin: 0; line-height: 1.4; }
+
+.dc-risk-badge {
+  flex-shrink: 0;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+.dc-risk-badge.high   { background: #fee2e2; color: #dc2626; }
+.dc-risk-badge.medium { background: #fef3c7; color: #d97706; }
+.dc-risk-badge.low    { background: #dcfce7; color: #16a34a; }
+
+.dc-species {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #eff6ff;
+  color: #2563eb;
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 4px 12px;
+  border-radius: 20px;
+  width: fit-content;
 }
 
-.disease-card:hover {
-  transform: translateY(-8px); /* Lift effect */
-  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2); /* Enhanced shadow on hover */
+.dc-symptoms-section { display: flex; flex-direction: column; gap: 8px; }
+.dc-symptoms-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #94a3b8;
+}
+.dc-symptom-list { display: flex; flex-direction: column; gap: 5px; }
+.dc-symptom-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 0.83rem;
+  color: #475569;
+  line-height: 1.5;
+}
+.dc-symptom-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #3b82f6;
+  flex-shrink: 0;
+  margin-top: 6px;
 }
 
-/* Risk Tag - Positioned at the top-right of the card */
-.disease-card .risk {
-  font-size: 1em;
-  font-weight: bold;
-  color: white;
-  padding: 10px 20px;
-  border-radius: 50px;
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  z-index: 10;
-  background: linear-gradient(145deg, #e74c3c, #c0392b); /* Gradient for high risk */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); /* Shadow for elevated look */
-}
-
-/* Disease Name */
-.disease-card h4 {
-  font-size: 1.6em;
-  font-weight: bold;
-  color: #34495e; /* Darker color for readability */
-  margin-bottom: 15px;
-}
-
-/* Disease Details */
-.disease-card p {
-  font-size: 1.1em;
-  color: #7f8c8d; /* Subtle gray for details */
-  margin: 10px 0;
-  line-height: 1.6;
-}
-
-.disease-card strong {
-  color: #2c3e50; /* Darker emphasis */
-  font-weight: bold;
-}
-
-/* Learn More Button */
-.disease-card button {
-  background: linear-gradient(145deg, #3498db, #2980b9); /* Gradient background */
-  color: white;
-  font-size: 1.1em;
-  font-weight: bold;
-  padding: 12px 30px;
+.dc-learn-btn {
+  margin-top: auto;
+  padding: 10px 16px;
+  background: #3b82f6;
+  color: #fff;
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
+  font-size: 0.88rem;
+  font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease;
-  align-self: center;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Slight shadow for elevation */
-}
-
-.disease-card button:hover {
-  background: linear-gradient(145deg, #2980b9, #1c6ba0); /* Darker gradient on hover */
-  transform: scale(1.05); /* Slight zoom effect */
-  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2); /* Enhanced shadow on hover */
-}
-
-/* Key Symptoms Section */
-.disease-card .key-symptoms {
-  font-size: 1em;
-  color: #95a5a6;
-  margin-top: 15px;
-  margin-bottom: 20px;
-}
-
-.disease-card .key-symptoms ul {
-  list-style: none;
-  padding-left: 0;
-}
-
-.disease-card .key-symptoms li {
-  font-size: 1em;
-  color: #7f8c8d;
-  margin: 8px 0;
+  transition: background 0.2s;
   display: flex;
   align-items: center;
+  justify-content: center;
+  gap: 6px;
 }
+.dc-learn-btn:hover { background: #2563eb; }
 
-.disease-card .key-symptoms li::before {
-  content: "•"; /* Bullet point */
-  color: #3498db;
-  font-size: 1.5em;
-  margin-right: 10px;
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-  .disease-card {
-    padding: 20px;
-  }
-
-  .disease-card h4 {
-    font-size: 1.4em;
-  }
-
-  .disease-card p {
-    font-size: 1em;
-  }
-
-  .disease-card button {
-    padding: 10px 20px;
-    font-size: 1em;
-    
-  }
-
-  .disease-card .risk {
-    font-size: 0.9em;
-    padding: 8px 15px;
-  }
-}
-
-/* Animation for Card */
-@keyframes cardEntrance {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.disease-card {
-  animation: cardEntrance 0.5s ease-in-out;
+@keyframes dcFadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
 }

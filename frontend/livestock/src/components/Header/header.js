@@ -1,58 +1,54 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
-import {Bell, User } from "lucide-react";
+import { useNavigate, useLocation } from "react-router-dom";
+import { Bell, User } from "lucide-react";
+import { useAuth } from "../../contexts/AuthContext";
+import { useNotificationContext } from "../../contexts/NotificationContext";
 import "./header.css";
 
+const PAGE_TITLES = {
+  "/dashboard": "Dashboard", "/animals": "Animals",
+  "/diseaseform": "Disease Prediction", "/diseases": "Disease Guide",
+  "/reports": "Reports", "/ai-assistant": "AI Assistant",
+  "/settings": "Settings", "/notification": "Notifications", "/profile": "Profile",
+};
+
 function Header() {
-  const navigate = useNavigate(); // Initialize the navigation hook
-  
-  const [showOverlay, setShowOverlay] = useState(false); // State to toggle overlay
-
-  // Toggle the profile overlay
-  const handleProfileClick = () => {
-    setShowOverlay(!showOverlay);
-  };
-
-  // Navigate to the Notifications page
-  const handleNotificationClick = (event) => {
-    event.preventDefault(); // Prevent any default action on click
-    console.log("Navigating to Notifications...");
-    navigate("/Notification"); // Use navigate to go to the Notifications page
-  };
-
-  
-
-  // Handle Sign Out
-  const handleLogout = () => {
-    // Clear session or token storage
-    alert("Logged out successfully!");
-    navigate("/register"); // Redirect to the register page
-  };
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { username, logout } = useAuth();
+  const [showMenu, setShowMenu] = useState(false);
+  const title = PAGE_TITLES[location.pathname] || "Livestock Manager";
+  const { unreadCount } = useNotificationContext();
 
   return (
     <header className="header">
-      
-      <div className="header-right">
-        <Bell
-          className="icon"
-          onClick={handleNotificationClick}
-          style={{ cursor: "pointer" }}
-        />
-        <div className="profile" onClick={handleProfileClick} style={{ cursor: "pointer" }}>
-          <User className="icon" />
-          <span className="profile-text">Profile</span>
-        </div>
+      <div className="header-left">
+        <h1 className="header-title">{title}</h1>
       </div>
-      {showOverlay && (
-        <div className="profile-overlay">
-          <ul className="profile-overlay-menu">
-            <li onClick={() => navigate("/Profile")}>Your Profile</li>
-            <li onClick={() => navigate("/Notification")}>Notifications</li>
-            <li onClick={() => navigate("/settings")}>Settings</li>
-            <li onClick={handleLogout}>Sign Out</li>
-          </ul>
+      <div className="header-right">
+        <button className="header-icon-btn notif-btn" onClick={() => navigate("/notification")} title="Notifications">
+          <Bell size={20} />
+          {unreadCount > 0 && <span className="notif-badge">{unreadCount > 99 ? '99+' : unreadCount}</span>}
+        </button>
+        <div className="header-profile" onClick={() => setShowMenu(!showMenu)}>
+          <div className="header-avatar">{username ? username[0].toUpperCase() : "U"}</div>
+          <span className="header-username">{username}</span>
         </div>
-      )}
+        {showMenu && (
+          <div className="header-dropdown">
+            <div className="header-dropdown-user">
+              <div className="header-avatar lg">{username ? username[0].toUpperCase() : "U"}</div>
+              <span>{username}</span>
+            </div>
+            <hr />
+            <button onClick={() => { navigate("/profile"); setShowMenu(false); }}><User size={14} /> Profile</button>
+            <button onClick={() => { navigate("/notification"); setShowMenu(false); }}><Bell size={14} /> Notifications</button>
+            <button onClick={() => { navigate("/settings"); setShowMenu(false); }}>⚙️ Settings</button>
+            <hr />
+            <button className="logout-btn" onClick={logout}>🚪 Sign Out</button>
+          </div>
+        )}
+      </div>
     </header>
   );
 }
