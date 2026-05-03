@@ -75,7 +75,8 @@ cd backend
 pip install -r requirements.txt
 uvicorn main:app --reload
 
-## Frontend
+### Frontend
+```bash
 cd frontend/livestock
 npm install
 npm start
