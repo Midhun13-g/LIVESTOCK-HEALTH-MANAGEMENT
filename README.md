@@ -69,14 +69,16 @@ A full-stack web application for managing and monitoring livestock health — bu
 
 ## ⚡ Getting Started
 
-### Backend
 ```bash
+### Backend
+
 cd backend
 pip install -r requirements.txt
 uvicorn main:app --reload
 
+
 ### Frontend
-```bash
+
 cd frontend/livestock
 npm install
 npm start
