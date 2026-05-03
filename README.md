@@ -70,6 +70,7 @@ A full-stack web application for managing and monitoring livestock health — bu
 ## ⚡ Getting Started
 
 ### Backend
+```bash
 cd backend
 pip install -r requirements.txt
 uvicorn main:app --reload
