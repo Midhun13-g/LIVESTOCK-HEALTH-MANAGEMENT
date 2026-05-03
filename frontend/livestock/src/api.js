@@ -1,6 +1,7 @@
 import axios from "axios";
 
-const api = axios.create({ baseURL: "http://127.0.0.1:8000" });
+// ADDED FOR DEPLOYMENT: use env variable, fallback to localhost for dev
+const api = axios.create({ baseURL: process.env.REACT_APP_API_URL || "http://127.0.0.1:8000" });
 
 // Attach token to every request
 api.interceptors.request.use((config) => {

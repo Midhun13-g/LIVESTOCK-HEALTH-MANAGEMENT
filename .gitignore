@@ -1,1 +1,50 @@
+# ADDED FOR DEPLOYMENT
+
+# ── Python ──
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+.eggs/
+venv/
+env/
+.venv/
+newvenv/
+
+# ── Environment variables (NEVER commit these) ──
 .env
+*.env
+!.env.example
+
+# ── Node / React ──
+node_modules/
+frontend/livestock/build/
+frontend/livestock/.pnp
+frontend/livestock/.pnp.js
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ── ML Models (large binary files — store separately) ──
+*.pkl
+*.joblib
+*.h5
+*.model
+
+# ── OS ──
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ── IDE ──
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# ── Docker ──
+.dockerignore

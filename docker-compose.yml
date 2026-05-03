@@ -1,39 +1,42 @@
+# ADDED FOR DEPLOYMENT — Full stack local development with Docker
 version: "3.9"
 
 services:
-  mongodb:
+
+  backend:
+    build:
+      context: ./backend
+    ports:
+      - "8000:8000"
+    env_file:
+      - ./backend/.env
+    environment:
+      - ALLOWED_ORIGINS=http://localhost:3000
+    volumes:
+      - ./backend:/app
+    depends_on:
+      - mongo
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend/livestock
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - REACT_APP_API_URL=http://localhost:8000
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+  mongo:
     image: mongo:7
-    container_name: livestock_mongo
     ports:
       - "27017:27017"
     volumes:
       - mongo_data:/data/db
     restart: unless-stopped
 
-  backend:
-    build: ./backend
-    container_name: livestock_backend
-    ports:
-      - "8000:8000"
-    environment:
-      - MONGO_URI=mongodb://mongodb:27017
-      - SECRET_KEY=${SECRET_KEY}
-      - GEMINI_API_KEY=${GEMINI_API_KEY}
-    depends_on:
-      - mongodb
-    volumes:
-      - model_data:/app/models
-    restart: unless-stopped
-
-  frontend:
-    build: ./frontend
-    container_name: livestock_frontend
-    ports:
-      - "3000:80"
-    depends_on:
-      - backend
-    restart: unless-stopped
-
 volumes:
   mongo_data:
-  model_data:
