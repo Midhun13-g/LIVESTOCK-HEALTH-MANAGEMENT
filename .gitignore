@@ -34,6 +34,9 @@ yarn-error.log*
 *.joblib
 *.h5
 *.model
+# Allow models checked into backend/models/
+!backend/models/*.pkl
+!backend/models/*.joblib
 
 # ── OS ──
 .DS_Store
