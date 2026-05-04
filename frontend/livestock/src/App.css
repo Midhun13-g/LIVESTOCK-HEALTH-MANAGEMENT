@@ -12,6 +12,7 @@ body {
   overflow: hidden;
 }
 
+/* Desktop: sidebar is 240px, header is 60px */
 .main-content {
   margin-left: 240px;
   margin-top: 60px;
@@ -28,23 +29,16 @@ body {
   .main-content {
     margin-left: 0;
     width: 100%;
+    /* header is fixed 60px — push content below it */
     margin-top: 60px;
     height: calc(100vh - 60px);
+    /* extra breathing room so first element isn't flush against top */
+    padding-top: 16px;
   }
 
-  /*
-    Global rule: every direct page wrapper gets top padding on mobile
-    so content never hides behind the fixed 60px header.
-    Covers: .animal-page, .dashboard-container, .rp-page,
-            .sp-page, .nc-page, .df-page, .disease-page, .ai-page
-  */
-  .animal-page,
-  .dashboard-container,
-  .rp-page,
-  .sp-page,
-  .nc-page,
-  .df-page,
-  .disease-page {
-    padding-top: 20px !important;
+  /* AI page manages its own height — don't add padding-top */
+  .main-content .ai-page {
+    height: calc(100vh - 60px);
+    padding-top: 0;
   }
 }
