@@ -3,7 +3,6 @@
 body {
   font-family: 'Inter', 'Segoe UI', sans-serif;
   background: #f1f5f9;
-  overflow: hidden;
 }
 
 .app-container {
@@ -29,16 +28,12 @@ body {
   .main-content {
     margin-left: 0;
     width: 100%;
-    /* header is fixed 60px — push content below it */
     margin-top: 60px;
     height: calc(100vh - 60px);
-    /* extra breathing room so first element isn't flush against top */
-    padding-top: 16px;
   }
 
   /* AI page manages its own height — don't add padding-top */
   .main-content .ai-page {
     height: calc(100vh - 60px);
-    padding-top: 0;
   }
 }
