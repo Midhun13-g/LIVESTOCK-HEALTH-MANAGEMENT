@@ -1,5 +1,12 @@
 .animal-page { padding: 24px; }
 
+@media (max-width: 768px) {
+  .animal-page { padding: 16px 12px; }
+  .search-bar { max-width: 100%; }
+  .top-bar { flex-wrap: wrap; }
+  .add-animal-btn, .filter-btn, .reset-btn { font-size: 0.82rem; padding: 9px 14px; }
+}
+
 /* ── Top bar ── */
 .top-bar {
   display: flex;

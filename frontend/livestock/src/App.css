@@ -21,5 +21,8 @@ body { font-family: 'Inter', 'Segoe UI', sans-serif; background: #f1f5f9; overfl
   .main-content {
     margin-left: 0;
     width: 100%;
+    margin-top: 60px;
+    height: calc(100vh - 60px);
+    padding-top: 8px;
   }
 }

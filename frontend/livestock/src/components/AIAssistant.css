@@ -10,6 +10,18 @@
   overflow: hidden;
 }
 
+@media (max-width: 768px) {
+  .ai-page { height: calc(100vh - 60px); }
+  .ai-header { padding: 10px 14px; }
+  .ai-header-info h2 { font-size: 0.88rem; }
+  .ai-clear-btn { padding: 5px 10px; font-size: 0.72rem; }
+  .ai-msg-row { padding: 4px 12px; }
+  .ai-msg-group { max-width: 88%; }
+  .ai-input-bar { padding: 10px 12px; gap: 8px; }
+  .ai-suggestions { grid-template-columns: 1fr; }
+  .ai-typing-row { padding: 4px 12px; }
+}
+
 /* ═══════════════════════════════════
    HEADER
 ═══════════════════════════════════ */
