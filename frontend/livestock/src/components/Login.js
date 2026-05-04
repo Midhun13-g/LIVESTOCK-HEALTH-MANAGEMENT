@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import AuthLayout from "./AuthLayout";
+import api from "../api";
 import "./AuthLayout.css";
 
 const Login = () => {
@@ -19,7 +19,7 @@ const Login = () => {
       const formData = new URLSearchParams();
       formData.append("username", username);
       formData.append("password", password);
-      const res = await axios.post("http://127.0.0.1:8000/token", formData, {
+      const res = await api.post("/token", formData, {
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
       });
       login(res.data.access_token);
