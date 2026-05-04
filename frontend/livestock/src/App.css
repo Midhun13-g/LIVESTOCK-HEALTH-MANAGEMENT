@@ -23,6 +23,6 @@ body { font-family: 'Inter', 'Segoe UI', sans-serif; background: #f1f5f9; overfl
     width: 100%;
     margin-top: 60px;
     height: calc(100vh - 60px);
-    padding-top: 8px;
+    padding-top: 0;
   }
 }
