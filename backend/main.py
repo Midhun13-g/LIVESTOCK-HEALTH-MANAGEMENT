@@ -88,8 +88,10 @@ app = FastAPI(title="Livestock Health Management API", lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,
-    # ADDED FOR DEPLOYMENT: read allowed origins from env, fallback to localhost for dev
-    allow_origins=["*"],
+    allow_origins=os.getenv(
+        "ALLOWED_ORIGINS",
+        "http://localhost:3000,http://127.0.0.1:3000"
+    ).split(","),
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
