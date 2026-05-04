@@ -18,5 +18,8 @@ body { font-family: 'Inter', 'Segoe UI', sans-serif; background: #f1f5f9; overfl
 }
 
 @media (max-width: 768px) {
-  .main-content { margin-left: 0; }
+  .main-content {
+    margin-left: 0;
+    width: 100%;
+  }
 }

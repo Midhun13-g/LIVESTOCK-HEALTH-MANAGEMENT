@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
 import { NotificationProvider } from "./contexts/NotificationContext";
@@ -24,11 +24,12 @@ const ProtectedRoute = ({ children }) => {
 
 function AppRoutes() {
   const { isLoggedIn } = useAuth();
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   return (
     <div className="app-container">
-      {isLoggedIn && <Sidebar />}
+      {isLoggedIn && <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />}
       <div className="main-content">
-        {isLoggedIn && <Header />}
+        {isLoggedIn && <Header onMenuClick={() => setSidebarOpen(p => !p)} />}
         <Routes>
           <Route path="/" element={isLoggedIn ? <Navigate to="/dashboard" /> : <Navigate to="/login" />} />
           <Route path="/login" element={isLoggedIn ? <Navigate to="/dashboard" /> : <Login />} />

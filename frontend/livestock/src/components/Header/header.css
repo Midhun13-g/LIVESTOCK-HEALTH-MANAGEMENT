@@ -14,7 +14,30 @@
   box-shadow: 0 1px 4px rgba(0,0,0,0.06);
 }
 
-.header-left { display: flex; align-items: center; }
+.header-hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  margin-right: 8px;
+  border-radius: 8px;
+  transition: background 0.15s;
+}
+.header-hamburger:hover { background: #f1f5f9; }
+.header-hamburger span {
+  display: block;
+  width: 20px;
+  height: 2px;
+  background: #475569;
+  border-radius: 2px;
+  transition: background 0.15s;
+}
+
+
 .header-title { font-size: 1.1rem; font-weight: 700; color: #1e293b; }
 
 .header-right { display: flex; align-items: center; gap: 12px; position: relative; }
@@ -75,4 +98,5 @@
 @media (max-width: 768px) {
   .header { left: 0; }
   .header-username { display: none; }
+  .header-hamburger { display: flex; }
 }

@@ -162,7 +162,19 @@
 .sp-btn-save:hover { background: #43a047; }
 
 @media (max-width: 600px) {
-  .sp-page { padding: 20px 16px; }
+  .sp-page { padding: 16px 12px; }
   .sp-row { flex-direction: column; align-items: flex-start; }
-  .sp-row select { min-width: 100%; }
+  .sp-row select { min-width: 100%; width: 100%; }
+  .sp-footer {
+    flex-direction: column;
+    gap: 10px;
+    padding-top: 8px;
+  }
+  .sp-btn-reset,
+  .sp-btn-save {
+    width: 100%;
+    text-align: center;
+    padding: 12px;
+    font-size: 0.95rem;
+  }
 }

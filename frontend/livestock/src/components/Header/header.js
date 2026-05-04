@@ -12,7 +12,7 @@ const PAGE_TITLES = {
   "/settings": "Settings", "/notification": "Notifications", "/profile": "Profile",
 };
 
-function Header() {
+function Header({ onMenuClick }) {
   const navigate = useNavigate();
   const location = useLocation();
   const { username, logout } = useAuth();
@@ -23,6 +23,10 @@ function Header() {
   return (
     <header className="header">
       <div className="header-left">
+        {/* Hamburger — mobile only */}
+        <button className="header-hamburger" onClick={onMenuClick} aria-label="Open menu">
+          <span /><span /><span />
+        </button>
         <h1 className="header-title">{title}</h1>
       </div>
       <div className="header-right">
