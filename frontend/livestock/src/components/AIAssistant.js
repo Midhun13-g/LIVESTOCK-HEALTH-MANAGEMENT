@@ -148,11 +148,13 @@ const AIAssistant = () => {
             <p><span className="ai-online-dot" /> Online · Livestock AI Assistant</p>
           </div>
         </div>
-        {messages.length > 0 && (
-          <button className="ai-clear-btn" onClick={handleClear}>
-            🗑 Clear Chat
-          </button>
-        )}
+        <button
+          className={`ai-clear-btn ${messages.length === 0 ? "ai-clear-btn-hidden" : ""}`}
+          onClick={handleClear}
+          disabled={messages.length === 0}
+        >
+          🗑 Clear
+        </button>
       </div>
 
       {/* Messages */}

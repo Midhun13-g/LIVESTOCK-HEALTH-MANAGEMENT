@@ -120,5 +120,7 @@
 .nc-empty p { font-size: 0.95rem; margin: 0; }
 
 @media (max-width: 600px) {
-  .nc-page { padding: 20px 16px; }
+  .nc-page { padding: 16px 12px; }
+  .nc-header { flex-wrap: wrap; gap: 10px; }
+  .nc-item { padding: 12px; gap: 10px; }
 }
